@@ -1,115 +1,148 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<title>BetterHome Prototype</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetterHome Prototype</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
 
-body{
-font-family: Arial, sans-serif;
-background:#f4f6f8;
-text-align:center;
-margin-top:80px;
-}
+    .wrapper {
+      width: 100%;
+      max-width: 700px;
+      margin: 80px auto;
+      text-align: center;
+      padding: 20px;
+    }
 
-.container{
-width:450px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 0 15px rgba(0,0,0,0.1);
-}
+    h1 {
+      font-size: 52px;
+      margin-bottom: 10px;
+      color: #1e3a8a;
+    }
 
-h1{
-color:#1e3a8a;
-margin-bottom:10px;
-}
+    .subtitle {
+      font-size: 24px;
+      margin-bottom: 35px;
+      color: #374151;
+    }
 
-p{
-color:#555;
-margin-bottom:25px;
-}
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      text-align: left;
+    }
 
-input,select,textarea{
-width:100%;
-padding:10px;
-margin-top:8px;
-margin-bottom:15px;
-border-radius:6px;
-border:1px solid #ccc;
-}
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
 
-button{
-width:100%;
-background:#22c55e;
-color:white;
-border:none;
-padding:12px;
-font-size:16px;
-border-radius:6px;
-cursor:pointer;
-}
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 15px;
+    }
 
-button:hover{
-background:#16a34a;
-}
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
 
-</style>
+    button {
+      width: 100%;
+      margin-top: 22px;
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
+    button:hover {
+      background: #16a34a;
+    }
+
+    .top-buttons {
+      margin-bottom: 28px;
+    }
+
+    .menu-btn {
+      display: block;
+      width: 100%;
+      background: #22c55e;
+      color: white;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-size: 22px;
+    }
+
+    .menu-btn:hover {
+      background: #16a34a;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrapper">
+    <h1>BetterHome Prototype</h1>
+    <p class="subtitle">Apartment issue reporting and tracking platform</p>
 
-<div class="container">
+    <div class="top-buttons">
+      <a href="#" class="menu-btn">Report New Issue</a>
+      <a href="#" class="menu-btn">View My Reports</a>
+      <a href="#" class="menu-btn">Landlord Dashboard</a>
+    </div>
 
-<h1>BetterHome Prototype</h1>
+    <div class="card">
+      <form id="issueForm">
+        <label for="category">Issue Category</label>
+        <select id="category">
+          <option>Mold</option>
+          <option>Leak</option>
+          <option>Pest</option>
+          <option>Broken Appliance</option>
+          <option>Heating Problem</option>
+          <option>Other</option>
+        </select>
 
-<p>Report apartment issues easily</p>
+        <label for="location">Location</label>
+        <input type="text" id="location" placeholder="Example: Bathroom ceiling" />
 
-<form>
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Describe the apartment issue..."></textarea>
 
-<label>Issue Category</label>
+        <label for="photo">Upload Photo</label>
+        <input type="file" id="photo" />
 
-<select>
-<option>Mold</option>
-<option>Leak</option>
-<option>Pest</option>
-<option>Broken Appliance</option>
-<option>Heating Problem</option>
-<option>Other</option>
-</select>
+        <button type="submit">Submit Issue Report</button>
+      </form>
+    </div>
+  </div>
 
-<label>Location</label>
-
-<input type="text" placeholder="Example: Bathroom ceiling">
-
-<label>Description</label>
-
-<textarea placeholder="Describe the problem..."></textarea>
-
-<label>Upload Photo</label>
-
-<input type="file">
-
-<button type="submit">Submit Issue Report</button>
-
-</form>
-
-</div>
-
-<script>
-
-document.querySelector("form").addEventListener("submit", function(e){
-
-e.preventDefault();
-
-alert("Issue report submitted successfully.");
-
-});
-
-</script>
-
+  <script>
+    document.getElementById("issueForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Issue report submitted successfully.");
+    });
+  </script>
 </body>
 </html>
