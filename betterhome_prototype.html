@@ -1,83 +1,104 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <title>BetterHome Prototype</title>
-</head>
-  <style>
+
+<style>
 
 body{
-font-family: Arial;
+font-family: Arial, sans-serif;
 background:#f4f6f8;
 text-align:center;
-margin-top:60px;
+margin-top:80px;
 }
 
-form{
-background:white;
-padding:20px;
-width:400px;
+.container{
+width:450px;
 margin:auto;
+background:white;
+padding:30px;
 border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+h1{
+color:#1e3a8a;
+margin-bottom:10px;
+}
+
+p{
+color:#555;
+margin-bottom:25px;
 }
 
 input,select,textarea{
 width:100%;
-margin-top:10px;
-margin-bottom:10px;
-padding:8px;
+padding:10px;
+margin-top:8px;
+margin-bottom:15px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
 button{
-background:#2563eb;
+width:100%;
+background:#22c55e;
 color:white;
-padding:10px;
 border:none;
-border-radius:5px;
+padding:12px;
+font-size:16px;
+border-radius:6px;
 cursor:pointer;
+}
+
+button:hover{
+background:#16a34a;
 }
 
 </style>
 
+</head>
+
 <body>
 
-<h1>BetterHome</h1>
+<div class="container">
 
-<h2>Report Apartment Issue</h2>
+<h1>BetterHome Prototype</h1>
+
+<p>Report apartment issues easily</p>
 
 <form>
 
-<label>Category</label>
+<label>Issue Category</label>
+
 <select>
 <option>Mold</option>
 <option>Leak</option>
 <option>Pest</option>
 <option>Broken Appliance</option>
+<option>Heating Problem</option>
+<option>Other</option>
 </select>
 
-<br><br>
-
 <label>Location</label>
-<input type="text">
 
-<br><br>
+<input type="text" placeholder="Example: Bathroom ceiling">
 
 <label>Description</label>
-<textarea></textarea>
 
-<br><br>
+<textarea placeholder="Describe the problem..."></textarea>
 
 <label>Upload Photo</label>
+
 <input type="file">
 
-<br><br>
-
-<button type="submit">Submit Report</button>
+<button type="submit">Submit Issue Report</button>
 
 </form>
 
-</body>
-</html>
+</div>
+
 <script>
 
 document.querySelector("form").addEventListener("submit", function(e){
@@ -89,3 +110,6 @@ alert("Issue report submitted successfully.");
 });
 
 </script>
+
+</body>
+</html>
