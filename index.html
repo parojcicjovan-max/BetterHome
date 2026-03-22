@@ -19,19 +19,19 @@
     .wrapper {
       width: 100%;
       max-width: 700px;
-      margin: 80px auto;
+      margin: 60px auto;
       text-align: center;
       padding: 20px;
     }
 
     h1 {
-      font-size: 52px;
+      font-size: 48px;
       margin-bottom: 10px;
       color: #1e3a8a;
     }
 
     .subtitle {
-      font-size: 24px;
+      font-size: 22px;
       margin-bottom: 35px;
       color: #374151;
     }
@@ -42,6 +42,7 @@
       padding: 30px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.08);
       text-align: left;
+      margin-bottom: 30px;
     }
 
     label {
@@ -99,6 +100,38 @@
     .menu-btn:hover {
       background: #16a34a;
     }
+
+    .success-message {
+      margin-top: 15px;
+      color: #166534;
+      font-weight: bold;
+    }
+
+    .reports-title {
+      text-align: left;
+      margin-bottom: 15px;
+      color: #1e3a8a;
+    }
+
+    .report-item {
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .report-item h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    .empty-text {
+      color: #6b7280;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -115,7 +148,8 @@
     <div class="card">
       <form id="issueForm">
         <label for="category">Issue Category</label>
-        <select id="category">
+        <select id="category" required>
+          <option value="">Select an issue</option>
           <option>Mold</option>
           <option>Leak</option>
           <option>Pest</option>
@@ -125,24 +159,80 @@
         </select>
 
         <label for="location">Location</label>
-        <input type="text" id="location" placeholder="Example: Bathroom ceiling" />
+        <input type="text" id="location" placeholder="Example: Bathroom ceiling" required />
 
         <label for="description">Description</label>
-        <textarea id="description" placeholder="Describe the apartment issue..."></textarea>
+        <textarea id="description" placeholder="Describe the apartment issue..." required></textarea>
 
         <label for="photo">Upload Photo</label>
         <input type="file" id="photo" />
 
         <button type="submit">Submit Issue Report</button>
+        <p id="successMessage" class="success-message"></p>
       </form>
+    </div>
+
+    <div class="card">
+      <h2 class="reports-title">Submitted Reports</h2>
+      <div id="reportsList">
+        <p class="empty-text">No reports submitted yet.</p>
+      </div>
     </div>
   </div>
 
   <script>
-    document.getElementById("issueForm").addEventListener("submit", function(e) {
+    const form = document.getElementById("issueForm");
+    const reportsList = document.getElementById("reportsList");
+    const successMessage = document.getElementById("successMessage");
+
+    function loadReports() {
+      const savedReports = JSON.parse(localStorage.getItem("betterHomeReports")) || [];
+
+      reportsList.innerHTML = "";
+
+      if (savedReports.length === 0) {
+        reportsList.innerHTML = '<p class="empty-text">No reports submitted yet.</p>';
+        return;
+      }
+
+      savedReports.forEach(function(report) {
+        const reportDiv = document.createElement("div");
+        reportDiv.classList.add("report-item");
+
+        reportDiv.innerHTML = `
+          <h3>${report.category}</h3>
+          <p><strong>Location:</strong> ${report.location}</p>
+          <p><strong>Description:</strong> ${report.description}</p>
+          <p><strong>Status:</strong> Open</p>
+        `;
+
+        reportsList.appendChild(reportDiv);
+      });
+    }
+
+    form.addEventListener("submit", function(e) {
       e.preventDefault();
-      alert("Issue report submitted successfully.");
+
+      const category = document.getElementById("category").value;
+      const location = document.getElementById("location").value;
+      const description = document.getElementById("description").value;
+
+      const newReport = {
+        category: category,
+        location: location,
+        description: description
+      };
+
+      const savedReports = JSON.parse(localStorage.getItem("betterHomeReports")) || [];
+      savedReports.push(newReport);
+      localStorage.setItem("betterHomeReports", JSON.stringify(savedReports));
+
+      form.reset();
+      successMessage.textContent = "Issue report submitted successfully.";
+      loadReports();
     });
+
+    loadReports();
   </script>
 </body>
 </html>
