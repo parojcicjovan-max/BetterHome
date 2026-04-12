@@ -18,73 +18,70 @@
 
     .wrapper {
       width: 100%;
-      max-width: 1000px;
-      margin: 60px auto;
-      text-align: center;
+      max-width: 850px;
+      margin: 30px auto;
       padding: 20px;
+      text-align: center;
     }
 
     h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
+      font-size: 62px;
+      margin-bottom: 8px;
       color: #1e3a8a;
     }
 
     .subtitle {
-      font-size: 22px;
-      margin-bottom: 35px;
+      font-size: 24px;
+      margin-bottom: 40px;
       color: #374151;
     }
 
-    .menu {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
     .menu-btn {
-      background: #2563eb;
+      display: block;
+      width: 100%;
+      background: #22c55e;
       color: white;
       border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
+      border-radius: 12px;
+      padding: 24px;
+      font-size: 28px;
+      margin-bottom: 18px;
       cursor: pointer;
-      font-size: 15px;
       transition: 0.2s ease;
     }
 
     .menu-btn:hover {
-      background: #1d4ed8;
+      background: #16a34a;
     }
 
-    .card {
+    .section {
+      display: none;
       background: white;
       border-radius: 16px;
       padding: 30px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
       text-align: left;
-      margin-bottom: 30px;
+      margin-top: 20px;
     }
 
-    .card h2 {
+    .section.active {
+      display: block;
+    }
+
+    .section h2 {
       margin-top: 0;
       color: #1e3a8a;
-      margin-bottom: 18px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      margin-top: 18px;
+      margin: 16px 0 8px;
       font-weight: bold;
-      color: #374151;
     }
 
     input[type="text"],
-    select,
     textarea,
+    select,
     input[type="file"] {
       width: 100%;
       padding: 12px;
@@ -98,80 +95,34 @@
       resize: vertical;
     }
 
-    button[type="submit"] {
-      margin-top: 20px;
-      width: 100%;
-      padding: 14px;
-      background: #16a34a;
-      color: white;
+    .submit-btn,
+    .back-btn,
+    .action-btn {
       border: none;
       border-radius: 10px;
-      font-size: 16px;
+      padding: 12px 16px;
+      font-size: 15px;
       cursor: pointer;
-      transition: 0.2s ease;
+      color: white;
     }
 
-    button[type="submit"]:hover {
+    .submit-btn {
+      width: 100%;
+      margin-top: 18px;
+      background: #16a34a;
+    }
+
+    .submit-btn:hover {
       background: #15803d;
     }
 
-    .success-message {
-      margin-top: 15px;
-      color: #166534;
-      font-weight: bold;
+    .back-btn {
+      background: #2563eb;
+      margin-bottom: 20px;
     }
 
-    .section-title {
-      text-align: left;
-      margin-bottom: 15px;
-      color: #1e3a8a;
-    }
-
-    .report-item {
-      background: #f9fafb;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-      text-align: left;
-    }
-
-    .report-item h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      color: #111827;
-    }
-
-    .empty-text {
-      color: #6b7280;
-      text-align: left;
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: bold;
-      margin-top: 8px;
-      background: #dbeafe;
-      color: #1d4ed8;
-    }
-
-    .report-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 15px;
-    }
-
-    .action-btn {
-      border: none;
-      padding: 10px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      color: white;
+    .back-btn:hover {
+      background: #1d4ed8;
     }
 
     .status-btn {
@@ -180,6 +131,47 @@
 
     .delete-btn {
       background: #dc2626;
+    }
+
+    .success-message {
+      margin-top: 14px;
+      color: #166534;
+      font-weight: bold;
+    }
+
+    .empty-text {
+      color: #6b7280;
+    }
+
+    .report-item {
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .report-item h3 {
+      margin-top: 0;
+      color: #111827;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+      background: #dbeafe;
+      color: #1d4ed8;
+      margin-top: 8px;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
     }
 
     .preview-image,
@@ -192,71 +184,29 @@
       display: block;
     }
 
-    .dashboard-header {
-      margin-bottom: 10px;
-      color: #374151;
+    #homeScreen.active {
+      display: block;
     }
 
-    .impact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-top: 15px;
-    }
-
-    .impact-box {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .impact-box h3 {
-      margin-top: 0;
-      color: #1e3a8a;
-      font-size: 18px;
-    }
-
-    .footer-note {
-      text-align: center;
-      color: #6b7280;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    html {
-      scroll-behavior: smooth;
+    .home-screen {
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="wrapper">
-    <h1>BetterHome</h1>
-    <p class="subtitle">Apartment issue reporting and tracking platform</p>
+    <div id="homeScreen" class="home-screen active">
+      <h1>BetterHome Prototype</h1>
+      <p class="subtitle">Apartment issue reporting and tracking platform</p>
 
-    <div class="menu">
-      <button class="menu-btn" onclick="scrollToSection('home')">Home</button>
-      <button class="menu-btn" onclick="scrollToSection('report')">Submit Report</button>
-      <button class="menu-btn" onclick="scrollToSection('myReports')">View My Reports</button>
-      <button class="menu-btn" onclick="scrollToSection('landlordDashboard')">Landlord Dashboard</button>
-      <button class="menu-btn" onclick="scrollToSection('impact')">Social Impact</button>
+      <button class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
+      <button class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
+      <button class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
     </div>
 
-    <div class="card" id="home">
-      <h2>Welcome</h2>
-      <p>
-        BetterHome is a prototype designed to help tenants report apartment issues in a simple
-        and organized way. Users can document problems like leaks, mold, pests, and broken
-        appliances, then track those reports in one place.
-      </p>
-      <p>
-        This platform supports better communication between tenants and landlords by creating
-        clearer records of maintenance requests and housing concerns.
-      </p>
-    </div>
-
-    <div class="card" id="report">
-      <h2>Submit an Issue Report</h2>
+    <div id="reportSection" class="section">
+      <button class="back-btn" onclick="goHome()">← Back to Home</button>
+      <h2>Report New Issue</h2>
 
       <form id="issueForm">
         <label for="category">Issue Category</label>
@@ -272,88 +222,74 @@
         </select>
 
         <label for="location">Location</label>
-        <input
-          type="text"
-          id="location"
-          placeholder="Example: Bathroom ceiling"
-          required
-        />
+        <input type="text" id="location" placeholder="Example: Bathroom ceiling" required />
 
         <label for="description">Description</label>
-        <textarea
-          id="description"
-          placeholder="Describe the apartment issue..."
-          required
-        ></textarea>
+        <textarea id="description" placeholder="Describe the apartment issue..." required></textarea>
 
         <label for="photo">Upload Photo</label>
         <input type="file" id="photo" accept="image/*" />
 
-        <img id="photoPreview" class="preview-image" style="display: none;" alt="Photo preview" />
+        <img id="photoPreview" class="preview-image" style="display:none;" alt="Photo preview" />
 
-        <button type="submit">Submit Issue Report</button>
+        <button type="submit" class="submit-btn">Submit Issue Report</button>
         <p id="successMessage" class="success-message"></p>
       </form>
     </div>
 
-    <div class="card" id="myReports">
-      <h2 class="section-title">View My Reports</h2>
-      <p class="dashboard-header">This section allows tenants to view all reports they have submitted.</p>
+    <div id="myReportsSection" class="section">
+      <button class="back-btn" onclick="goHome()">← Back to Home</button>
+      <h2>View My Reports</h2>
       <div id="myReportsList">
         <p class="empty-text">No reports submitted yet.</p>
       </div>
     </div>
 
-    <div class="card" id="landlordDashboard">
-      <h2 class="section-title">Landlord Dashboard</h2>
-      <p class="dashboard-header">
-        This dashboard allows the landlord or property manager to review reports, update statuses,
-        and remove resolved entries.
-      </p>
+    <div id="landlordSection" class="section">
+      <button class="back-btn" onclick="goHome()">← Back to Home</button>
+      <h2>Landlord Dashboard</h2>
       <div id="landlordReportsList">
         <p class="empty-text">No reports available yet.</p>
       </div>
     </div>
-
-    <div class="card" id="impact">
-      <h2>Social Impact Goals</h2>
-      <p>
-        BetterHome was created with a social justice perspective in mind. Many tenants struggle
-        to document housing problems clearly, and this can create power imbalances in communication
-        with landlords or property managers.
-      </p>
-
-      <div class="impact-grid">
-        <div class="impact-box">
-          <h3>Transparency</h3>
-          <p>Creates a clear record of apartment issues and maintenance concerns.</p>
-        </div>
-        <div class="impact-box">
-          <h3>Accountability</h3>
-          <p>Helps both tenants and landlords track the status of reported problems.</p>
-        </div>
-        <div class="impact-box">
-          <h3>Accessibility</h3>
-          <p>Uses a simple layout and form structure so users can report issues more easily.</p>
-        </div>
-      </div>
-    </div>
-
-    <p class="footer-note">BetterHome Prototype - Staging Version</p>
   </div>
 
   <script>
+    const homeScreen = document.getElementById("homeScreen");
+    const sections = document.querySelectorAll(".section");
     const form = document.getElementById("issueForm");
-    const successMessage = document.getElementById("successMessage");
     const photoInput = document.getElementById("photo");
     const photoPreview = document.getElementById("photoPreview");
+    const successMessage = document.getElementById("successMessage");
     const myReportsList = document.getElementById("myReportsList");
     const landlordReportsList = document.getElementById("landlordReportsList");
 
     let uploadedImageData = "";
 
-    function scrollToSection(sectionId) {
-      document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+    function showSection(sectionId) {
+      homeScreen.classList.remove("active");
+      homeScreen.style.display = "none";
+
+      sections.forEach(section => {
+        section.classList.remove("active");
+        section.style.display = "none";
+      });
+
+      const selectedSection = document.getElementById(sectionId);
+      selectedSection.classList.add("active");
+      selectedSection.style.display = "block";
+
+      renderAllReports();
+    }
+
+    function goHome() {
+      sections.forEach(section => {
+        section.classList.remove("active");
+        section.style.display = "none";
+      });
+
+      homeScreen.classList.add("active");
+      homeScreen.style.display = "block";
     }
 
     photoInput.addEventListener("change", function () {
@@ -361,14 +297,14 @@
 
       if (!file) {
         uploadedImageData = "";
-        photoPreview.style.display = "none";
         photoPreview.src = "";
+        photoPreview.style.display = "none";
         return;
       }
 
       const reader = new FileReader();
-      reader.onload = function (event) {
-        uploadedImageData = event.target.result;
+      reader.onload = function (e) {
+        uploadedImageData = e.target.result;
         photoPreview.src = uploadedImageData;
         photoPreview.style.display = "block";
       };
@@ -383,10 +319,6 @@
       localStorage.setItem("betterHomeReports", JSON.stringify(reports));
     }
 
-    function getStatusBadge(status) {
-      return `<span class="status-badge">${status}</span>`;
-    }
-
     function renderMyReports() {
       const reports = getReports();
       myReportsList.innerHTML = "";
@@ -396,24 +328,24 @@
         return;
       }
 
-      reports.forEach(function (report) {
-        const reportDiv = document.createElement("div");
-        reportDiv.classList.add("report-item");
+      reports.forEach(report => {
+        const div = document.createElement("div");
+        div.classList.add("report-item");
 
-        reportDiv.innerHTML = `
+        div.innerHTML = `
           <h3>${report.category}</h3>
           <p><strong>Location:</strong> ${report.location}</p>
           <p><strong>Description:</strong> ${report.description}</p>
           <p><strong>Date Submitted:</strong> ${report.date}</p>
-          <p><strong>Status:</strong> ${getStatusBadge(report.status)}</p>
-          ${report.photo ? `<img src="${report.photo}" alt="Uploaded issue photo" class="report-image" />` : ""}
+          <p><strong>Status:</strong> <span class="status-badge">${report.status}</span></p>
+          ${report.photo ? `<img src="${report.photo}" class="report-image" alt="Issue image">` : ""}
         `;
 
-        myReportsList.appendChild(reportDiv);
+        myReportsList.appendChild(div);
       });
     }
 
-    function renderLandlordDashboard() {
+    function renderLandlordReports() {
       const reports = getReports();
       landlordReportsList.innerHTML = "";
 
@@ -422,25 +354,30 @@
         return;
       }
 
-      reports.forEach(function (report, index) {
-        const reportDiv = document.createElement("div");
-        reportDiv.classList.add("report-item");
+      reports.forEach((report, index) => {
+        const div = document.createElement("div");
+        div.classList.add("report-item");
 
-        reportDiv.innerHTML = `
+        div.innerHTML = `
           <h3>${report.category}</h3>
           <p><strong>Location:</strong> ${report.location}</p>
           <p><strong>Description:</strong> ${report.description}</p>
           <p><strong>Date Submitted:</strong> ${report.date}</p>
-          <p><strong>Status:</strong> ${getStatusBadge(report.status)}</p>
-          ${report.photo ? `<img src="${report.photo}" alt="Uploaded issue photo" class="report-image" />` : ""}
+          <p><strong>Status:</strong> <span class="status-badge">${report.status}</span></p>
+          ${report.photo ? `<img src="${report.photo}" class="report-image" alt="Issue image">` : ""}
           <div class="report-actions">
             <button class="action-btn status-btn" onclick="toggleStatus(${index})">Change Status</button>
             <button class="action-btn delete-btn" onclick="deleteReport(${index})">Delete</button>
           </div>
         `;
 
-        landlordReportsList.appendChild(reportDiv);
+        landlordReportsList.appendChild(div);
       });
+    }
+
+    function renderAllReports() {
+      renderMyReports();
+      renderLandlordReports();
     }
 
     function toggleStatus(index) {
@@ -466,11 +403,6 @@
       renderAllReports();
     }
 
-    function renderAllReports() {
-      renderMyReports();
-      renderLandlordDashboard();
-    }
-
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
@@ -479,9 +411,9 @@
       const description = document.getElementById("description").value.trim();
 
       const newReport = {
-        category: category,
-        location: location,
-        description: description,
+        category,
+        location,
+        description,
         status: "Open",
         date: new Date().toLocaleDateString(),
         photo: uploadedImageData
