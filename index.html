@@ -6,9 +6,7 @@
   <title>BetterHome Prototype</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -25,11 +23,7 @@
       text-align: center;
     }
 
-    h1 {
-      font-size: 56px;
-      margin-bottom: 8px;
-      color: #1e3a8a;
-    }
+    h1 { font-size: 56px; color: #1e3a8a; }
 
     .subtitle {
       font-size: 22px;
@@ -38,7 +32,6 @@
     }
 
     .menu-btn {
-      display: block;
       width: 100%;
       background: #22c55e;
       color: white;
@@ -48,577 +41,242 @@
       font-size: 26px;
       margin-bottom: 18px;
       cursor: pointer;
-      transition: 0.2s ease;
     }
 
-    .menu-btn:hover {
-      background: #16a34a;
-    }
+    .menu-btn:hover { background: #16a34a; }
 
     .section {
       display: none;
       background: white;
       border-radius: 16px;
       padding: 30px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-      text-align: left;
       margin-top: 20px;
     }
 
-    .section.active {
-      display: block;
-    }
+    .section.active { display: block; }
 
-    .section h2 {
-      margin-top: 0;
-      color: #1e3a8a;
-    }
+    label { display: block; margin: 16px 0 8px; font-weight: bold; }
 
-    label {
-      display: block;
-      margin: 16px 0 8px;
-      font-weight: bold;
-    }
-
-    input[type="text"],
-    textarea,
-    select,
-    input[type="file"] {
+    input, textarea, select {
       width: 100%;
       padding: 12px;
       border: 1px solid #d1d5db;
       border-radius: 10px;
-      font-size: 15px;
     }
 
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
+    textarea { min-height: 110px; }
 
-    .submit-btn,
-    .back-btn,
-    .action-btn {
+    .submit-btn, .back-btn, .action-btn {
       border: none;
       border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 15px;
-      cursor: pointer;
-      color: white;
-    }
-
-    .submit-btn {
-      width: 100%;
-      margin-top: 18px;
-      background: #16a34a;
-    }
-
-    .submit-btn:hover {
-      background: #15803d;
-    }
-
-    .back-btn {
-      background: #2563eb;
-      margin-bottom: 20px;
-    }
-
-    .back-btn:hover {
-      background: #1d4ed8;
-    }
-
-    .status-btn {
-      background: #f59e0b;
-    }
-
-    .delete-btn {
-      background: #dc2626;
-    }
-
-    .success-message {
-      margin-top: 14px;
-      color: #166534;
-      font-weight: bold;
-    }
-
-    .error-message {
-      margin-top: 14px;
-      color: #b91c1c;
-      font-weight: bold;
-    }
-
-    .empty-text {
-      color: #6b7280;
-    }
-
-    .security-note {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      color: #1e3a8a;
       padding: 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      margin-bottom: 20px;
+      color: white;
+      cursor: pointer;
     }
+
+    .submit-btn { background: #16a34a; width: 100%; }
+    .back-btn { background: #2563eb; margin-bottom: 20px; }
+    .status-btn { background: #f59e0b; }
+    .delete-btn { background: #dc2626; }
+
+    .success-message { color: green; margin-top: 10px; }
+    .error-message { color: red; margin-top: 10px; }
 
     .report-item {
       background: #f9fafb;
       border: 1px solid #d1d5db;
-      border-radius: 12px;
       padding: 15px;
-      margin-bottom: 15px;
-    }
-
-    .report-item h3 {
-      margin-top: 0;
-      color: #111827;
+      margin-bottom: 10px;
+      border-radius: 10px;
     }
 
     .status-badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: bold;
       background: #dbeafe;
-      color: #1d4ed8;
-      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      margin-left: 5px;
     }
 
-    .report-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 15px;
-    }
-
-    .preview-image,
-    .report-image {
-      width: 100%;
-      max-width: 220px;
-      border-radius: 10px;
-      margin-top: 12px;
-      border: 1px solid #d1d5db;
-      display: block;
-    }
-
-    #homeScreen.active {
-      display: block;
-    }
-
-    .home-screen {
-      display: none;
-    }
+    img { max-width: 200px; margin-top: 10px; }
 
     @media (max-width: 600px) {
-      .wrapper {
-        margin: 10px auto;
-        padding: 14px;
-      }
-
-      h1 {
-        font-size: 36px;
-      }
-
-      .subtitle {
-        font-size: 18px;
-      }
-
-      .menu-btn {
-        font-size: 20px;
-        padding: 18px;
-      }
-
-      .section {
-        padding: 20px;
-      }
+      h1 { font-size: 36px; }
+      .menu-btn { font-size: 20px; padding: 18px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrapper">
-    <div id="homeScreen" class="home-screen active">
-      <h1>BetterHome Prototype</h1>
-      <p class="subtitle">Apartment issue reporting and tracking platform</p>
-
-      <button class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
-      <button class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
-      <button class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
-    </div>
-
-    <div id="reportSection" class="section">
-      <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>Report New Issue</h2>
-
-      <p class="security-note">
-        Privacy note: This is a class prototype. Reports are saved only in this browser using localStorage.
-        Do not enter private information such as phone numbers, passwords, or personal documents.
-      </p>
-
-      <form id="issueForm">
-        <label for="category">Issue Category</label>
-        <select id="category" required>
-          <option value="">Select an issue</option>
-          <option value="Mold">Mold</option>
-          <option value="Leak">Leak</option>
-          <option value="Pest">Pest</option>
-          <option value="Broken Heater">Broken Heater</option>
-          <option value="Electrical Problem">Electrical Problem</option>
-          <option value="Broken Appliance">Broken Appliance</option>
-          <option value="Other">Other</option>
-        </select>
-
-        <label for="location">Location</label>
-        <input
-          type="text"
-          id="location"
-          placeholder="Example: Bathroom ceiling"
-          required
-          minlength="3"
-          maxlength="80"
-        />
-
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          placeholder="Describe the apartment issue..."
-          required
-          minlength="10"
-          maxlength="500"
-        ></textarea>
-
-        <label for="photo">Upload Photo</label>
-        <input type="file" id="photo" accept="image/jpeg, image/png, image/webp" />
-
-        <img id="photoPreview" class="preview-image" style="display:none;" alt="Photo preview" />
-
-        <button type="submit" class="submit-btn">Submit Issue Report</button>
-        <p id="successMessage" class="success-message"></p>
-        <p id="errorMessage" class="error-message"></p>
-      </form>
-    </div>
-
-    <div id="myReportsSection" class="section">
-      <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>View My Reports</h2>
-      <div id="myReportsList">
-        <p class="empty-text">No reports submitted yet.</p>
-      </div>
-    </div>
-
-    <div id="landlordSection" class="section">
-      <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>Landlord Dashboard</h2>
-      <div id="landlordReportsList">
-        <p class="empty-text">No reports available yet.</p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const homeScreen = document.getElementById("homeScreen");
-    const sections = document.querySelectorAll(".section");
-    const form = document.getElementById("issueForm");
-    const photoInput = document.getElementById("photo");
-    const photoPreview = document.getElementById("photoPreview");
-    const successMessage = document.getElementById("successMessage");
-    const errorMessage = document.getElementById("errorMessage");
-    const myReportsList = document.getElementById("myReportsList");
-    const landlordReportsList = document.getElementById("landlordReportsList");
-
-    let uploadedImageData = "";
-
-    function showSection(sectionId) {
-      homeScreen.classList.remove("active");
-      homeScreen.style.display = "none";
-
-      sections.forEach(section => {
-        section.classList.remove("active");
-        section.style.display = "none";
-      });
-
-      const selectedSection = document.getElementById(sectionId);
-      selectedSection.classList.add("active");
-      selectedSection.style.display = "block";
-
-      renderAllReports();
-    }
-
-    function goHome() {
-      sections.forEach(section => {
-        section.classList.remove("active");
-        section.style.display = "none";
-      });
-
-      homeScreen.classList.add("active");
-      homeScreen.style.display = "block";
-      clearMessages();
-    }
-
-    function clearMessages() {
-      successMessage.textContent = "";
-      errorMessage.textContent = "";
-    }
-
-    function cleanInput(value) {
-      return value.trim().replace(/[<>]/g, "");
-    }
-
-    function getReports() {
-      try {
-        return JSON.parse(localStorage.getItem("betterHomeReports")) || [];
-      } catch (error) {
-        return [];
-      }
-    }
-
-    function saveReports(reports) {
-      localStorage.setItem("betterHomeReports", JSON.stringify(reports));
-    }
-
-    function validatePhoto(file) {
-      if (!file) return true;
-
-      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-      const maxSize = 2 * 1024 * 1024;
-
-      if (!allowedTypes.includes(file.type)) {
-        errorMessage.textContent = "Please upload only JPG, PNG, or WEBP image files.";
-        return false;
-      }
-
-      if (file.size > maxSize) {
-        errorMessage.textContent = "Image is too large. Please upload an image under 2MB.";
-        return false;
-      }
-
-      return true;
-    }
-
-    photoInput.addEventListener("change", function () {
-      clearMessages();
-
-      const file = photoInput.files[0];
-
-      if (!file) {
-        uploadedImageData = "";
-        photoPreview.src = "";
-        photoPreview.style.display = "none";
-        return;
-      }
-
-      if (!validatePhoto(file)) {
-        photoInput.value = "";
-        uploadedImageData = "";
-        photoPreview.src = "";
-        photoPreview.style.display = "none";
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        uploadedImageData = e.target.result;
-        photoPreview.src = uploadedImageData;
-        photoPreview.style.display = "block";
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-    function createTextElement(tag, label, value) {
-      const element = document.createElement(tag);
-
-      if (label) {
-        const strong = document.createElement("strong");
-        strong.textContent = label + ": ";
-        element.appendChild(strong);
-      }
-
-      element.appendChild(document.createTextNode(value));
-      return element;
-    }
-
-    function createReportCard(report, index, showActions) {
-      const div = document.createElement("div");
-      div.classList.add("report-item");
-
-      const title = document.createElement("h3");
-      title.textContent = report.category;
-      div.appendChild(title);
-
-      div.appendChild(createTextElement("p", "Location", report.location));
-      div.appendChild(createTextElement("p", "Description", report.description));
-      div.appendChild(createTextElement("p", "Date Submitted", report.date));
-
-      const statusP = document.createElement("p");
-      const statusStrong = document.createElement("strong");
-      statusStrong.textContent = "Status: ";
-
-      const statusSpan = document.createElement("span");
-      statusSpan.classList.add("status-badge");
-      statusSpan.textContent = report.status;
-
-      statusP.appendChild(statusStrong);
-      statusP.appendChild(statusSpan);
-      div.appendChild(statusP);
-
-      if (report.photo) {
-        const img = document.createElement("img");
-        img.src = report.photo;
-        img.classList.add("report-image");
-        img.alt = "Issue image";
-        div.appendChild(img);
-      }
-
-      if (showActions) {
-        const actions = document.createElement("div");
-        actions.classList.add("report-actions");
-
-        const statusButton = document.createElement("button");
-        statusButton.classList.add("action-btn", "status-btn");
-        statusButton.textContent = "Change Status";
-        statusButton.onclick = function () {
-          toggleStatus(index);
-        };
-
-        const deleteButton = document.createElement("button");
-        deleteButton.classList.add("action-btn", "delete-btn");
-        deleteButton.textContent = "Delete";
-        deleteButton.onclick = function () {
-          deleteReport(index);
-        };
-
-        actions.appendChild(statusButton);
-        actions.appendChild(deleteButton);
-        div.appendChild(actions);
-      }
-
-      return div;
-    }
-
-    function renderMyReports() {
-      const reports = getReports();
-      myReportsList.innerHTML = "";
-
-      if (reports.length === 0) {
-        myReportsList.innerHTML = '<p class="empty-text">No reports submitted yet.</p>';
-        return;
-      }
-
-      reports.forEach(report => {
-        myReportsList.appendChild(createReportCard(report, null, false));
-      });
-    }
-
-    function renderLandlordReports() {
-      const reports = getReports();
-      landlordReportsList.innerHTML = "";
-
-      if (reports.length === 0) {
-        landlordReportsList.innerHTML = '<p class="empty-text">No reports available yet.</p>';
-        return;
-      }
-
-      reports.forEach((report, index) => {
-        landlordReportsList.appendChild(createReportCard(report, index, true));
-      });
-    }
-
-    function renderAllReports() {
-      renderMyReports();
-      renderLandlordReports();
-    }
-
-    function toggleStatus(index) {
-      const reports = getReports();
-
-      if (!reports[index]) return;
-
-      const currentStatus = reports[index].status;
-
-      if (currentStatus === "Open") {
-        reports[index].status = "In Progress";
-      } else if (currentStatus === "In Progress") {
-        reports[index].status = "Resolved";
-      } else {
-        reports[index].status = "Open";
-      }
-
-      saveReports(reports);
-      renderAllReports();
-    }
-
-    function deleteReport(index) {
-      const reports = getReports();
-
-      if (!reports[index]) return;
-
-      const confirmDelete = confirm("Are you sure you want to delete this report?");
-
-      if (!confirmDelete) return;
-
-      reports.splice(index, 1);
-      saveReports(reports);
-      renderAllReports();
-    }
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      clearMessages();
-
-      const category = document.getElementById("category").value;
-      const location = cleanInput(document.getElementById("location").value);
-      const description = cleanInput(document.getElementById("description").value);
-      const file = photoInput.files[0];
-
-      if (!category) {
-        errorMessage.textContent = "Please select an issue category.";
-        return;
-      }
-
-      if (location.length < 3) {
-        errorMessage.textContent = "Please enter a more specific location.";
-        return;
-      }
-
-      if (description.length < 10) {
-        errorMessage.textContent = "Please describe the issue in more detail.";
-        return;
-      }
-
-      if (description.length > 500) {
-        errorMessage.textContent = "Description is too long. Please keep it under 500 characters.";
-        return;
-      }
-
-      if (!validatePhoto(file)) {
-        return;
-      }
-
-      const newReport = {
-        category: category,
-        location: location,
-        description: description,
-        status: "Open",
-        date: new Date().toLocaleDateString(),
-        photo: uploadedImageData
-      };
-
-      const reports = getReports();
-      reports.push(newReport);
-      saveReports(reports);
-
-      form.reset();
-      uploadedImageData = "";
-      photoPreview.src = "";
-      photoPreview.style.display = "none";
-
-      successMessage.textContent = "Issue report submitted successfully.";
-      renderAllReports();
-    });
-
-    renderAllReports();
-  </script>
+<div class="wrapper">
+
+<div id="homeScreen">
+  <h1>BetterHome</h1>
+  <p class="subtitle">Apartment issue reporting</p>
+
+  <button class="menu-btn" onclick="showSection('report')">Report Issue</button>
+  <button class="menu-btn" onclick="showSection('my')">My Reports</button>
+  <button class="menu-btn" onclick="showSection('landlord')">Landlord</button>
+</div>
+
+<div id="report" class="section">
+  <button class="back-btn" onclick="goHome()">Back</button>
+
+  <form id="form">
+    <label>Category</label>
+    <select id="category" required>
+      <option value="">Select</option>
+      <option>Mold</option>
+      <option>Leak</option>
+      <option>Pest</option>
+      <option>Other</option>
+    </select>
+
+    <label>Location</label>
+    <input id="location" required minlength="3" maxlength="80">
+
+    <label>Description</label>
+    <textarea id="desc" required minlength="10" maxlength="500"></textarea>
+
+    <label>Photo</label>
+    <input type="file" id="photo" accept="image/*">
+
+    <img id="preview" style="display:none;">
+
+    <button class="submit-btn">Submit</button>
+    <p id="ok" class="success-message"></p>
+    <p id="err" class="error-message"></p>
+  </form>
+</div>
+
+<div id="my" class="section">
+  <button class="back-btn" onclick="goHome()">Back</button>
+  <div id="myList"></div>
+</div>
+
+<div id="landlord" class="section">
+  <button class="back-btn" onclick="goHome()">Back</button>
+  <div id="allList"></div>
+</div>
+
+</div>
+
+<script>
+let imgData = "";
+
+function showSection(id){
+  document.getElementById("homeScreen").style.display="none";
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+  render();
+}
+
+function goHome(){
+  document.getElementById("homeScreen").style.display="block";
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+}
+
+function getData(){
+  return JSON.parse(localStorage.getItem("data"))||[];
+}
+
+function saveData(d){
+  localStorage.setItem("data",JSON.stringify(d));
+}
+
+document.getElementById("photo").onchange = e=>{
+  const f = e.target.files[0];
+  if(!f) return;
+
+  if(f.size > 2*1024*1024){
+    alert("Image too big");
+    return;
+  }
+
+  const r = new FileReader();
+  r.onload = x=>{
+    imgData = x.target.result;
+    preview.src = imgData;
+    preview.style.display="block";
+  };
+  r.readAsDataURL(f);
+};
+
+form.onsubmit = e=>{
+  e.preventDefault();
+  err.textContent="";
+  ok.textContent="";
+
+  const c = category.value;
+  const l = location.value.trim();
+  const d = desc.value.trim();
+
+  if(l.length<3){ err.textContent="Location too short"; return; }
+  if(d.length<10){ err.textContent="Description too short"; return; }
+
+  const data = getData();
+  data.push({
+    c,l,d,
+    s:"Open",
+    date:new Date().toLocaleDateString(),
+    img:imgData
+  });
+
+  saveData(data);
+  form.reset();
+  imgData="";
+  preview.style.display="none";
+  ok.textContent="Submitted";
+  render();
+};
+
+function render(){
+  const data = getData();
+  myList.innerHTML="";
+  allList.innerHTML="";
+
+  data.forEach((r,i)=>{
+    const div=document.createElement("div");
+    div.className="report-item";
+
+    div.innerHTML=`
+      <h3>${r.c}</h3>
+      <p>${r.l}</p>
+      <p>${r.d}</p>
+      <p>${r.date}</p>
+      <span class="status-badge">${r.s}</span>
+      ${r.img?`<img src="${r.img}">`:``}
+    `;
+
+    myList.appendChild(div);
+
+    const div2=div.cloneNode(true);
+
+    const btn=document.createElement("button");
+    btn.className="action-btn status-btn";
+    btn.innerText="Change";
+    btn.onclick=()=>{
+      r.s = r.s==="Open"?"Done":"Open";
+      saveData(data);
+      render();
+    };
+
+    const del=document.createElement("button");
+    del.className="action-btn delete-btn";
+    del.innerText="Delete";
+    del.onclick=()=>{
+      data.splice(i,1);
+      saveData(data);
+      render();
+    };
+
+    div2.appendChild(btn);
+    div2.appendChild(del);
+    allList.appendChild(div2);
+  });
+}
+
+render();
+</script>
+
 </body>
 </html>
