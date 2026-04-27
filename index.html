@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BetterHome Prototype</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -25,14 +26,14 @@
     }
 
     h1 {
-      font-size: 62px;
+      font-size: 56px;
       margin-bottom: 8px;
       color: #1e3a8a;
     }
 
     .subtitle {
-      font-size: 24px;
-      margin-bottom: 40px;
+      font-size: 22px;
+      margin-bottom: 35px;
       color: #374151;
     }
 
@@ -44,7 +45,7 @@
       border: none;
       border-radius: 12px;
       padding: 24px;
-      font-size: 28px;
+      font-size: 26px;
       margin-bottom: 18px;
       cursor: pointer;
       transition: 0.2s ease;
@@ -139,8 +140,24 @@
       font-weight: bold;
     }
 
+    .error-message {
+      margin-top: 14px;
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
     .empty-text {
       color: #6b7280;
+    }
+
+    .security-note {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e3a8a;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 20px;
     }
 
     .report-item {
@@ -191,8 +208,33 @@
     .home-screen {
       display: none;
     }
+
+    @media (max-width: 600px) {
+      .wrapper {
+        margin: 10px auto;
+        padding: 14px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .subtitle {
+        font-size: 18px;
+      }
+
+      .menu-btn {
+        font-size: 20px;
+        padding: 18px;
+      }
+
+      .section {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="wrapper">
     <div id="homeScreen" class="home-screen active">
@@ -208,32 +250,51 @@
       <button class="back-btn" onclick="goHome()">← Back to Home</button>
       <h2>Report New Issue</h2>
 
+      <p class="security-note">
+        Privacy note: This is a class prototype. Reports are saved only in this browser using localStorage.
+        Do not enter private information such as phone numbers, passwords, or personal documents.
+      </p>
+
       <form id="issueForm">
         <label for="category">Issue Category</label>
         <select id="category" required>
           <option value="">Select an issue</option>
-          <option>Mold</option>
-          <option>Leak</option>
-          <option>Pest</option>
-          <option>Broken Heater</option>
-          <option>Electrical Problem</option>
-          <option>Broken Appliance</option>
-          <option>Other</option>
+          <option value="Mold">Mold</option>
+          <option value="Leak">Leak</option>
+          <option value="Pest">Pest</option>
+          <option value="Broken Heater">Broken Heater</option>
+          <option value="Electrical Problem">Electrical Problem</option>
+          <option value="Broken Appliance">Broken Appliance</option>
+          <option value="Other">Other</option>
         </select>
 
         <label for="location">Location</label>
-        <input type="text" id="location" placeholder="Example: Bathroom ceiling" required />
+        <input
+          type="text"
+          id="location"
+          placeholder="Example: Bathroom ceiling"
+          required
+          minlength="3"
+          maxlength="80"
+        />
 
         <label for="description">Description</label>
-        <textarea id="description" placeholder="Describe the apartment issue..." required></textarea>
+        <textarea
+          id="description"
+          placeholder="Describe the apartment issue..."
+          required
+          minlength="10"
+          maxlength="500"
+        ></textarea>
 
         <label for="photo">Upload Photo</label>
-        <input type="file" id="photo" accept="image/*" />
+        <input type="file" id="photo" accept="image/jpeg, image/png, image/webp" />
 
         <img id="photoPreview" class="preview-image" style="display:none;" alt="Photo preview" />
 
         <button type="submit" class="submit-btn">Submit Issue Report</button>
         <p id="successMessage" class="success-message"></p>
+        <p id="errorMessage" class="error-message"></p>
       </form>
     </div>
 
@@ -261,6 +322,7 @@
     const photoInput = document.getElementById("photo");
     const photoPreview = document.getElementById("photoPreview");
     const successMessage = document.getElementById("successMessage");
+    const errorMessage = document.getElementById("errorMessage");
     const myReportsList = document.getElementById("myReportsList");
     const landlordReportsList = document.getElementById("landlordReportsList");
 
@@ -290,9 +352,52 @@
 
       homeScreen.classList.add("active");
       homeScreen.style.display = "block";
+      clearMessages();
+    }
+
+    function clearMessages() {
+      successMessage.textContent = "";
+      errorMessage.textContent = "";
+    }
+
+    function cleanInput(value) {
+      return value.trim().replace(/[<>]/g, "");
+    }
+
+    function getReports() {
+      try {
+        return JSON.parse(localStorage.getItem("betterHomeReports")) || [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveReports(reports) {
+      localStorage.setItem("betterHomeReports", JSON.stringify(reports));
+    }
+
+    function validatePhoto(file) {
+      if (!file) return true;
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      const maxSize = 2 * 1024 * 1024;
+
+      if (!allowedTypes.includes(file.type)) {
+        errorMessage.textContent = "Please upload only JPG, PNG, or WEBP image files.";
+        return false;
+      }
+
+      if (file.size > maxSize) {
+        errorMessage.textContent = "Image is too large. Please upload an image under 2MB.";
+        return false;
+      }
+
+      return true;
     }
 
     photoInput.addEventListener("change", function () {
+      clearMessages();
+
       const file = photoInput.files[0];
 
       if (!file) {
@@ -302,21 +407,94 @@
         return;
       }
 
+      if (!validatePhoto(file)) {
+        photoInput.value = "";
+        uploadedImageData = "";
+        photoPreview.src = "";
+        photoPreview.style.display = "none";
+        return;
+      }
+
       const reader = new FileReader();
+
       reader.onload = function (e) {
         uploadedImageData = e.target.result;
         photoPreview.src = uploadedImageData;
         photoPreview.style.display = "block";
       };
+
       reader.readAsDataURL(file);
     });
 
-    function getReports() {
-      return JSON.parse(localStorage.getItem("betterHomeReports")) || [];
+    function createTextElement(tag, label, value) {
+      const element = document.createElement(tag);
+
+      if (label) {
+        const strong = document.createElement("strong");
+        strong.textContent = label + ": ";
+        element.appendChild(strong);
+      }
+
+      element.appendChild(document.createTextNode(value));
+      return element;
     }
 
-    function saveReports(reports) {
-      localStorage.setItem("betterHomeReports", JSON.stringify(reports));
+    function createReportCard(report, index, showActions) {
+      const div = document.createElement("div");
+      div.classList.add("report-item");
+
+      const title = document.createElement("h3");
+      title.textContent = report.category;
+      div.appendChild(title);
+
+      div.appendChild(createTextElement("p", "Location", report.location));
+      div.appendChild(createTextElement("p", "Description", report.description));
+      div.appendChild(createTextElement("p", "Date Submitted", report.date));
+
+      const statusP = document.createElement("p");
+      const statusStrong = document.createElement("strong");
+      statusStrong.textContent = "Status: ";
+
+      const statusSpan = document.createElement("span");
+      statusSpan.classList.add("status-badge");
+      statusSpan.textContent = report.status;
+
+      statusP.appendChild(statusStrong);
+      statusP.appendChild(statusSpan);
+      div.appendChild(statusP);
+
+      if (report.photo) {
+        const img = document.createElement("img");
+        img.src = report.photo;
+        img.classList.add("report-image");
+        img.alt = "Issue image";
+        div.appendChild(img);
+      }
+
+      if (showActions) {
+        const actions = document.createElement("div");
+        actions.classList.add("report-actions");
+
+        const statusButton = document.createElement("button");
+        statusButton.classList.add("action-btn", "status-btn");
+        statusButton.textContent = "Change Status";
+        statusButton.onclick = function () {
+          toggleStatus(index);
+        };
+
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("action-btn", "delete-btn");
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function () {
+          deleteReport(index);
+        };
+
+        actions.appendChild(statusButton);
+        actions.appendChild(deleteButton);
+        div.appendChild(actions);
+      }
+
+      return div;
     }
 
     function renderMyReports() {
@@ -329,19 +507,7 @@
       }
 
       reports.forEach(report => {
-        const div = document.createElement("div");
-        div.classList.add("report-item");
-
-        div.innerHTML = `
-          <h3>${report.category}</h3>
-          <p><strong>Location:</strong> ${report.location}</p>
-          <p><strong>Description:</strong> ${report.description}</p>
-          <p><strong>Date Submitted:</strong> ${report.date}</p>
-          <p><strong>Status:</strong> <span class="status-badge">${report.status}</span></p>
-          ${report.photo ? `<img src="${report.photo}" class="report-image" alt="Issue image">` : ""}
-        `;
-
-        myReportsList.appendChild(div);
+        myReportsList.appendChild(createReportCard(report, null, false));
       });
     }
 
@@ -355,23 +521,7 @@
       }
 
       reports.forEach((report, index) => {
-        const div = document.createElement("div");
-        div.classList.add("report-item");
-
-        div.innerHTML = `
-          <h3>${report.category}</h3>
-          <p><strong>Location:</strong> ${report.location}</p>
-          <p><strong>Description:</strong> ${report.description}</p>
-          <p><strong>Date Submitted:</strong> ${report.date}</p>
-          <p><strong>Status:</strong> <span class="status-badge">${report.status}</span></p>
-          ${report.photo ? `<img src="${report.photo}" class="report-image" alt="Issue image">` : ""}
-          <div class="report-actions">
-            <button class="action-btn status-btn" onclick="toggleStatus(${index})">Change Status</button>
-            <button class="action-btn delete-btn" onclick="deleteReport(${index})">Delete</button>
-          </div>
-        `;
-
-        landlordReportsList.appendChild(div);
+        landlordReportsList.appendChild(createReportCard(report, index, true));
       });
     }
 
@@ -382,6 +532,9 @@
 
     function toggleStatus(index) {
       const reports = getReports();
+
+      if (!reports[index]) return;
+
       const currentStatus = reports[index].status;
 
       if (currentStatus === "Open") {
@@ -398,6 +551,13 @@
 
     function deleteReport(index) {
       const reports = getReports();
+
+      if (!reports[index]) return;
+
+      const confirmDelete = confirm("Are you sure you want to delete this report?");
+
+      if (!confirmDelete) return;
+
       reports.splice(index, 1);
       saveReports(reports);
       renderAllReports();
@@ -405,15 +565,41 @@
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      clearMessages();
 
       const category = document.getElementById("category").value;
-      const location = document.getElementById("location").value.trim();
-      const description = document.getElementById("description").value.trim();
+      const location = cleanInput(document.getElementById("location").value);
+      const description = cleanInput(document.getElementById("description").value);
+      const file = photoInput.files[0];
+
+      if (!category) {
+        errorMessage.textContent = "Please select an issue category.";
+        return;
+      }
+
+      if (location.length < 3) {
+        errorMessage.textContent = "Please enter a more specific location.";
+        return;
+      }
+
+      if (description.length < 10) {
+        errorMessage.textContent = "Please describe the issue in more detail.";
+        return;
+      }
+
+      if (description.length > 500) {
+        errorMessage.textContent = "Description is too long. Please keep it under 500 characters.";
+        return;
+      }
+
+      if (!validatePhoto(file)) {
+        return;
+      }
 
       const newReport = {
-        category,
-        location,
-        description,
+        category: category,
+        location: location,
+        description: description,
         status: "Open",
         date: new Date().toLocaleDateString(),
         photo: uploadedImageData
@@ -427,8 +613,8 @@
       uploadedImageData = "";
       photoPreview.src = "";
       photoPreview.style.display = "none";
-      successMessage.textContent = "Issue report submitted successfully.";
 
+      successMessage.textContent = "Issue report submitted successfully.";
       renderAllReports();
     });
 
