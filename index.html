@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BetterHome Prototype</title>
+  <title>BetterHome</title>
 
   <style>
     * {
@@ -13,28 +13,48 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f3f4f6;
+      background: linear-gradient(135deg, #eff6ff, #f3f4f6);
       color: #111827;
     }
 
     .wrapper {
       width: 100%;
-      max-width: 850px;
+      max-width: 900px;
       margin: 30px auto;
       padding: 20px;
       text-align: center;
     }
 
+    .tagline {
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: #2563eb;
+      font-weight: bold;
+      background: #dbeafe;
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+
     h1 {
-      font-size: 56px;
-      margin-bottom: 8px;
+      font-size: 60px;
+      margin-bottom: 10px;
       color: #1e3a8a;
     }
 
     .subtitle {
-      font-size: 22px;
-      margin-bottom: 35px;
+      font-size: 24px;
+      margin-bottom: 15px;
       color: #374151;
+      line-height: 1.4;
+    }
+
+    .intro-text {
+      max-width: 700px;
+      margin: 0 auto 35px;
+      color: #6b7280;
+      font-size: 17px;
+      line-height: 1.6;
     }
 
     .menu-btn {
@@ -43,24 +63,26 @@
       background: #22c55e;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 24px;
-      font-size: 26px;
+      font-size: 25px;
       margin-bottom: 18px;
       cursor: pointer;
       transition: 0.2s ease;
+      box-shadow: 0 8px 18px rgba(34, 197, 94, 0.25);
     }
 
     .menu-btn:hover {
       background: #16a34a;
+      transform: translateY(-2px);
     }
 
     .section {
       display: none;
       background: white;
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 30px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.09);
       text-align: left;
       margin-top: 20px;
     }
@@ -85,14 +107,14 @@
     select,
     input[type="file"] {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       border: 1px solid #d1d5db;
       border-radius: 10px;
       font-size: 15px;
     }
 
     textarea {
-      min-height: 110px;
+      min-height: 120px;
       resize: vertical;
     }
 
@@ -158,13 +180,14 @@
       border-radius: 10px;
       font-size: 14px;
       margin-bottom: 20px;
+      line-height: 1.5;
     }
 
     .report-item {
       background: #f9fafb;
       border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 15px;
+      border-radius: 14px;
+      padding: 16px;
       margin-bottom: 15px;
     }
 
@@ -209,18 +232,53 @@
       display: none;
     }
 
-    @media (max-width: 600px) {
+    .feature-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 30px 0;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      text-align: center;
+      border: 1px solid #e5e7eb;
+    }
+
+    .feature-card h3 {
+      margin: 8px 0;
+      color: #1e3a8a;
+    }
+
+    .feature-card p {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 700px) {
+      .feature-row {
+        grid-template-columns: 1fr;
+      }
+
       .wrapper {
         margin: 10px auto;
         padding: 14px;
       }
 
       h1 {
-        font-size: 36px;
+        font-size: 40px;
       }
 
       .subtitle {
-        font-size: 18px;
+        font-size: 19px;
+      }
+
+      .intro-text {
+        font-size: 15px;
       }
 
       .menu-btn {
@@ -238,17 +296,45 @@
 <body>
   <div class="wrapper">
     <div id="homeScreen" class="home-screen active">
-      <h1>BetterHome Prototype</h1>
-      <p class="subtitle">Apartment issue reporting and tracking platform</p>
+      <div class="tagline">Built for tenants in New York City</div>
 
-      <button class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
-      <button class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
-      <button class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
+      <h1>BetterHome</h1>
+
+      <p class="subtitle">
+        Report apartment problems easily and track repairs in one place.
+      </p>
+
+      <p class="intro-text">
+        BetterHome helps tenants document issues like mold, leaks, pests, broken heaters,
+        and unsafe living conditions. Tenants can submit reports with details and photos,
+        while landlords can review and update the repair status.
+      </p>
+
+      <div class="feature-row">
+        <div class="feature-card">
+          <h3>📸 Report</h3>
+          <p>Submit apartment issues with location, description, and photo proof.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>📂 Track</h3>
+          <p>View submitted reports and follow the status of each repair request.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>🏢 Manage</h3>
+          <p>Landlords can review issues, update statuses, and keep records organized.</p>
+        </div>
+      </div>
+
+      <button class="menu-btn" onclick="showSection('reportSection')">📸 Report an Issue</button>
+      <button class="menu-btn" onclick="showSection('myReportsSection')">📂 View My Reports</button>
+      <button class="menu-btn" onclick="showSection('landlordSection')">🏢 Landlord Dashboard</button>
     </div>
 
     <div id="reportSection" class="section">
       <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>Report New Issue</h2>
+      <h2>Report an Issue</h2>
 
       <p class="security-note">
         Privacy note: This is a class prototype. Reports are saved only in this browser using localStorage.
@@ -300,7 +386,7 @@
 
     <div id="myReportsSection" class="section">
       <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>View My Reports</h2>
+      <h2>My Reports</h2>
       <div id="myReportsList">
         <p class="empty-text">No reports submitted yet.</p>
       </div>
