@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BetterHome</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -107,6 +109,10 @@
       opacity: 0.95;
     }
 
+    .logout-btn {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+    }
+
     .section {
       display: none;
       text-align: left;
@@ -143,6 +149,8 @@
     }
 
     input[type="text"],
+    input[type="email"],
+    input[type="password"],
     textarea,
     select,
     input[type="file"] {
@@ -297,58 +305,88 @@
       display: block;
     }
 
-    #homeScreen.active {
-      display: block;
+    .report-image {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .report-image:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+    }
+
+    .image-modal.active {
+      display: flex;
+    }
+
+    .image-modal img {
+      max-width: 95%;
+      max-height: 90vh;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .close-modal {
+      position: fixed;
+      top: 25px;
+      right: 30px;
+      background: white;
+      color: #111827;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .home-screen {
       display: none;
     }
-.image-modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.85);
-  justify-content: center;
-  align-items: center;
-  padding: 25px;
-}
 
-.image-modal.active {
-  display: flex;
-}
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 25px 0;
+    }
 
-.image-modal img {
-  max-width: 95%;
-  max-height: 90vh;
-  border-radius: 18px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-}
+    .auth-tabs button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #e2e8f0;
+      color: #334155;
+    }
 
-.close-modal {
-  position: fixed;
-  top: 25px;
-  right: 30px;
-  background: white;
-  color: #111827;
-  border: none;
-  border-radius: 999px;
-  padding: 12px 18px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    .auth-tabs button.active {
+      background: #2563eb;
+      color: white;
+    }
 
-.report-image {
-  cursor: pointer;
-  transition: 0.2s;
-}
+    .user-bar {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e3a8a;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 25px;
+      font-weight: bold;
+    }
 
-.report-image:hover {
-  transform: scale(1.03);
-  opacity: 0.9;
-}
     @media (max-width: 750px) {
       .home-card,
       .section {
@@ -384,110 +422,156 @@
 <body>
   <div class="wrapper">
 
-    <div id="homeScreen" class="home-screen active">
-      <div class="home-card">
-        <h1>BetterHome</h1>
+    <div id="authScreen" class="home-card">
+      <h1>BetterHome</h1>
+      <p class="subtitle">Secure login for tenants and landlords.</p>
+      <p class="small-text">
+        Create an account, choose your role, and access only the features connected to your account.
+      </p>
 
-        <p class="subtitle">
-          A clean and simple platform for reporting apartment issues and tracking repair updates.
-        </p>
-
-        <p class="small-text">
-          Tenants can submit maintenance reports with photos, descriptions, and automatic dates.
-          Landlords can review each issue, update the repair status, and keep everything organized.
-        </p>
-
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3>Report Issues</h3>
-            <p>Submit problems like mold, leaks, pests, broken heaters, or damaged appliances.</p>
-          </div>
-
-          <div class="feature-card">
-            <h3>Track Progress</h3>
-            <p>Every report includes a submitted date, current status, and last update.</p>
-          </div>
-
-          <div class="feature-card">
-            <h3>Manage Repairs</h3>
-            <p>Landlords can change status from Open to In Progress to Resolved.</p>
-          </div>
-        </div>
-
-        <button class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
-        <button class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
-        <button class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
+      <div class="auth-tabs">
+        <button id="loginTab" class="active" onclick="setAuthMode('login')">Login</button>
+        <button id="signupTab" onclick="setAuthMode('signup')">Sign Up</button>
       </div>
-    </div>
 
-    <div id="reportSection" class="section">
-      <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>Report New Issue</h2>
+      <label for="authEmail">Email</label>
+      <input type="email" id="authEmail" placeholder="Enter your email" />
 
-      <form id="issueForm">
-        <label for="category">Issue Category</label>
-        <select id="category" required>
-          <option value="">Select an issue</option>
-          <option value="Mold">Mold</option>
-          <option value="Leak">Leak</option>
-          <option value="Pest">Pest</option>
-          <option value="Broken Heater">Broken Heater</option>
-          <option value="Electrical Problem">Electrical Problem</option>
-          <option value="Broken Appliance">Broken Appliance</option>
-          <option value="Other">Other</option>
+      <label for="authPassword">Password</label>
+      <input type="password" id="authPassword" placeholder="Enter your password" />
+
+      <div id="signupFields" style="display:none;">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Example: Jovan Parojcic" />
+
+        <label for="userRole">Account Type</label>
+        <select id="userRole">
+          <option value="tenant">Tenant</option>
+          <option value="landlord">Landlord</option>
         </select>
-
-        <label for="location">Location</label>
-        <input
-          type="text"
-          id="location"
-          placeholder="Example: Bathroom ceiling"
-          required
-          minlength="3"
-          maxlength="80"
-        />
-
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          placeholder="Describe the apartment issue..."
-          required
-          minlength="10"
-          maxlength="500"
-        ></textarea>
-
-        <label for="photo">Upload Photo</label>
-        <input type="file" id="photo" accept="image/jpeg, image/png, image/webp" />
-
-        <img id="photoPreview" class="preview-image" style="display:none;" alt="Photo preview" />
-
-        <button type="submit" class="submit-btn">Submit Issue Report</button>
-        <p id="successMessage" class="success-message"></p>
-        <p id="errorMessage" class="error-message"></p>
-      </form>
-    </div>
-
-    <div id="myReportsSection" class="section">
-      <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>View My Reports</h2>
-      <div id="myReportsList">
-        <p class="empty-text">No reports submitted yet.</p>
       </div>
+
+      <button id="authButton" class="menu-btn" onclick="handleAuth()">Login</button>
+      <p id="authMessage" class="error-message"></p>
     </div>
 
-    <div id="landlordSection" class="section">
-      <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>Landlord Dashboard</h2>
-      <div id="landlordReportsList">
-        <p class="empty-text">No reports available yet.</p>
+    <div id="appScreen" style="display:none;">
+      <div id="homeScreen" class="home-screen active">
+        <div class="home-card">
+          <h1>BetterHome</h1>
+
+          <div id="userBar" class="user-bar"></div>
+
+          <p class="subtitle">
+            A clean and simple platform for reporting apartment issues and tracking repair updates.
+          </p>
+
+          <p class="small-text">
+            Tenants can submit maintenance reports with photos, descriptions, and automatic dates.
+            Landlords can review each issue, update the repair status, and keep everything organized.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>Report Issues</h3>
+              <p>Submit problems like mold, leaks, pests, broken heaters, or damaged appliances.</p>
+            </div>
+
+            <div class="feature-card">
+              <h3>Track Progress</h3>
+              <p>Every report includes a submitted date, current status, and last update.</p>
+            </div>
+
+            <div class="feature-card">
+              <h3>Manage Repairs</h3>
+              <p>Landlords can change status from Open to In Progress to Resolved.</p>
+            </div>
+          </div>
+
+          <button id="tenantReportBtn" class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
+          <button id="tenantMyReportsBtn" class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
+          <button id="landlordBtn" class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
+          <button class="menu-btn logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <div id="reportSection" class="section">
+        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <h2>Report New Issue</h2>
+
+        <form id="issueForm">
+          <label for="category">Issue Category</label>
+          <select id="category" required>
+            <option value="">Select an issue</option>
+            <option value="Mold">Mold</option>
+            <option value="Leak">Leak</option>
+            <option value="Pest">Pest</option>
+            <option value="Broken Heater">Broken Heater</option>
+            <option value="Electrical Problem">Electrical Problem</option>
+            <option value="Broken Appliance">Broken Appliance</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <label for="location">Location</label>
+          <input
+            type="text"
+            id="location"
+            placeholder="Example: Bathroom ceiling"
+            required
+            minlength="3"
+            maxlength="80"
+          />
+
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            placeholder="Describe the apartment issue..."
+            required
+            minlength="10"
+            maxlength="500"
+          ></textarea>
+
+          <label for="photo">Upload Photo</label>
+          <input type="file" id="photo" accept="image/jpeg, image/png, image/webp" />
+
+          <img id="photoPreview" class="preview-image" style="display:none;" alt="Photo preview" />
+
+          <button type="submit" class="submit-btn">Submit Issue Report</button>
+          <p id="successMessage" class="success-message"></p>
+          <p id="errorMessage" class="error-message"></p>
+        </form>
+      </div>
+
+      <div id="myReportsSection" class="section">
+        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <h2>View My Reports</h2>
+        <div id="myReportsList">
+          <p class="empty-text">No reports submitted yet.</p>
+        </div>
+      </div>
+
+      <div id="landlordSection" class="section">
+        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <h2>Landlord Dashboard</h2>
+        <div id="landlordReportsList">
+          <p class="empty-text">No reports available yet.</p>
+        </div>
       </div>
     </div>
   </div>
-<div id="imageModal" class="image-modal" onclick="closeImageModal()">
-  <button class="close-modal" onclick="closeImageModal()">Close</button>
-  <img id="modalImage" src="" alt="Full issue image">
-</div>
+
+  <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <button class="close-modal" onclick="closeImageModal()">Close</button>
+    <img id="modalImage" src="" alt="Full issue image">
+  </div>
+
   <script>
+    const SUPABASE_URL = "https://snltjzmkgxtjpeadlpna.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_frhRltGUxG1Ap_FTMuXCxg_Y3UsMqrd";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const authScreen = document.getElementById("authScreen");
+    const appScreen = document.getElementById("appScreen");
     const homeScreen = document.getElementById("homeScreen");
     const sections = document.querySelectorAll(".section");
     const form = document.getElementById("issueForm");
@@ -495,13 +579,160 @@
     const photoPreview = document.getElementById("photoPreview");
     const successMessage = document.getElementById("successMessage");
     const errorMessage = document.getElementById("errorMessage");
+    const authMessage = document.getElementById("authMessage");
     const myReportsList = document.getElementById("myReportsList");
     const landlordReportsList = document.getElementById("landlordReportsList");
 
+    let authMode = "login";
+    let currentUser = null;
+    let currentProfile = null;
     let uploadedImageData = "";
 
-    function getFormattedDate() {
-      return new Date().toLocaleString("en-US", {
+    function setAuthMode(mode) {
+      authMode = mode;
+      authMessage.textContent = "";
+
+      document.getElementById("loginTab").classList.toggle("active", mode === "login");
+      document.getElementById("signupTab").classList.toggle("active", mode === "signup");
+      document.getElementById("signupFields").style.display = mode === "signup" ? "block" : "none";
+      document.getElementById("authButton").textContent = mode === "signup" ? "Create Account" : "Login";
+    }
+
+    async function handleAuth() {
+      if (authMode === "signup") {
+        await signUp();
+      } else {
+        await login();
+      }
+    }
+
+    async function signUp() {
+      authMessage.textContent = "";
+
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+      const fullName = cleanInput(document.getElementById("fullName").value);
+      const role = document.getElementById("userRole").value;
+
+      if (!email || !password || !fullName) {
+        authMessage.textContent = "Please enter your name, email, and password.";
+        return;
+      }
+
+      if (password.length < 6) {
+        authMessage.textContent = "Password must be at least 6 characters.";
+        return;
+      }
+
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        authMessage.textContent = error.message;
+        return;
+      }
+
+      if (!data.user) {
+        authMessage.textContent = "Account created. Please log in.";
+        setAuthMode("login");
+        return;
+      }
+
+      await supabase.from("profiles").insert({
+        id: data.user.id,
+        full_name: fullName,
+        role: role
+      });
+
+      authMessage.className = "success-message";
+      authMessage.textContent = "Account created successfully. You can log in now.";
+      setAuthMode("login");
+    }
+
+    async function login() {
+      authMessage.textContent = "";
+      authMessage.className = "error-message";
+
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+
+      if (!email || !password) {
+        authMessage.textContent = "Please enter email and password.";
+        return;
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        authMessage.textContent = error.message;
+        return;
+      }
+
+      currentUser = data.user;
+      await loadProfile();
+      showApp();
+    }
+
+    async function loadProfile() {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .single();
+
+      if (error || !data) {
+        currentProfile = {
+          id: currentUser.id,
+          full_name: currentUser.email,
+          role: "tenant"
+        };
+
+        await supabase.from("profiles").insert({
+          id: currentUser.id,
+          full_name: currentUser.email,
+          role: "tenant"
+        });
+      } else {
+        currentProfile = data;
+      }
+    }
+
+    function showApp() {
+      authScreen.style.display = "none";
+      appScreen.style.display = "block";
+
+      document.getElementById("userBar").textContent =
+        "Logged in as " + (currentProfile.full_name || currentUser.email) +
+        " | Role: " + currentProfile.role.toUpperCase();
+
+      if (currentProfile.role === "tenant") {
+        document.getElementById("tenantReportBtn").style.display = "block";
+        document.getElementById("tenantMyReportsBtn").style.display = "block";
+        document.getElementById("landlordBtn").style.display = "none";
+      } else {
+        document.getElementById("tenantReportBtn").style.display = "none";
+        document.getElementById("tenantMyReportsBtn").style.display = "none";
+        document.getElementById("landlordBtn").style.display = "block";
+      }
+
+      goHome();
+      renderAllReports();
+    }
+
+    async function logout() {
+      await supabase.auth.signOut();
+      location.reload();
+    }
+
+    function getFormattedDate(dateValue) {
+      const date = dateValue ? new Date(dateValue) : new Date();
+
+      return date.toLocaleString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric",
@@ -511,28 +742,13 @@
     }
 
     function showSection(sectionId) {
-      homeScreen.classList.remove("active");
       homeScreen.style.display = "none";
 
       sections.forEach(section => {
         section.classList.remove("active");
         section.style.display = "none";
       });
-function openImageModal(imageSrc) {
-  const modal = document.getElementById("imageModal");
-  const modalImage = document.getElementById("modalImage");
 
-  modalImage.src = imageSrc;
-  modal.classList.add("active");
-}
-
-function closeImageModal() {
-  const modal = document.getElementById("imageModal");
-  const modalImage = document.getElementById("modalImage");
-
-  modal.classList.remove("active");
-  modalImage.src = "";
-}
       const selectedSection = document.getElementById(sectionId);
       selectedSection.classList.add("active");
       selectedSection.style.display = "block";
@@ -546,7 +762,6 @@ function closeImageModal() {
         section.style.display = "none";
       });
 
-      homeScreen.classList.add("active");
       homeScreen.style.display = "block";
       clearMessages();
     }
@@ -560,23 +775,20 @@ function closeImageModal() {
       return value.trim().replace(/[<>]/g, "");
     }
 
-    function getReports() {
-      try {
-        return JSON.parse(localStorage.getItem("betterHomeReports")) || [];
-      } catch (error) {
-        return [];
-      }
-    }
-
-    function saveReports(reports) {
-      localStorage.setItem("betterHomeReports", JSON.stringify(reports));
+    function escapeHTML(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
     function validatePhoto(file) {
       if (!file) return true;
 
       const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-      const maxSize = 2 * 1024 * 1024;
+      const maxSize = 1 * 1024 * 1024;
 
       if (!allowedTypes.includes(file.type)) {
         errorMessage.textContent = "Please upload only JPG, PNG, or WEBP image files.";
@@ -584,7 +796,7 @@ function closeImageModal() {
       }
 
       if (file.size > maxSize) {
-        errorMessage.textContent = "Image is too large. Please upload an image under 2MB.";
+        errorMessage.textContent = "Image is too large. Please upload an image under 1MB.";
         return false;
       }
 
@@ -622,11 +834,23 @@ function closeImageModal() {
       reader.readAsDataURL(file);
     });
 
-    function safeDate(value) {
-      return value || "Unknown date";
+    function openImageModal(imageSrc) {
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+
+      modalImage.src = imageSrc;
+      modal.classList.add("active");
     }
 
-    function createReportCard(report, index, showActions) {
+    function closeImageModal() {
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+
+      modal.classList.remove("active");
+      modalImage.src = "";
+    }
+
+    function createReportCard(report, showActions) {
       const div = document.createElement("div");
       div.classList.add("report-item");
 
@@ -648,39 +872,33 @@ function closeImageModal() {
       meta.classList.add("report-meta");
 
       meta.innerHTML = `
-        <div class="meta-box"><strong>Location:</strong><br>${report.location || "Not provided"}</div>
-        <div class="meta-box"><strong>Date Submitted:</strong><br>${safeDate(report.submittedDate || report.date)}</div>
-        <div class="meta-box"><strong>Last Updated:</strong><br>${safeDate(report.lastUpdated)}</div>
-        <div class="meta-box"><strong>Status:</strong><br>${report.status || "Open"}</div>
+        <div class="meta-box"><strong>Location:</strong><br>${escapeHTML(report.location || "Not provided")}</div>
+        <div class="meta-box"><strong>Date Submitted:</strong><br>${getFormattedDate(report.submitted_date)}</div>
+        <div class="meta-box"><strong>Last Updated:</strong><br>${getFormattedDate(report.last_updated)}</div>
+        <div class="meta-box"><strong>Status:</strong><br>${escapeHTML(report.status || "Open")}</div>
       `;
 
       div.appendChild(meta);
 
       const description = document.createElement("div");
       description.classList.add("description-box");
-      description.innerHTML = `<strong>Description:</strong><br>${report.description || "No description"}`;
+      description.innerHTML = `<strong>Description:</strong><br>${escapeHTML(report.description || "No description")}`;
       div.appendChild(description);
 
-      if (report.statusHistory && report.statusHistory.length > 0) {
-        const history = document.createElement("div");
-        history.classList.add("description-box");
-        history.innerHTML = `<strong>Status History:</strong><br>${report.statusHistory.join("<br>")}`;
-        div.appendChild(history);
+      if (report.photo_url) {
+        const img = document.createElement("img");
+        img.src = report.photo_url;
+        img.classList.add("report-image");
+        img.alt = "Issue image";
+        img.title = "Click to open image";
+
+        img.onclick = function (event) {
+          event.stopPropagation();
+          openImageModal(report.photo_url);
+        };
+
+        div.appendChild(img);
       }
-
-      if (report.photo) {
-  const img = document.createElement("img");
-  img.src = report.photo;
-  img.classList.add("report-image");
-  img.alt = "Issue image";
-  img.title = "Click to open image";
-
-  img.onclick = function () {
-    openImageModal(report.photo);
-  };
-
-  div.appendChild(img);
-}
 
       if (showActions) {
         const actions = document.createElement("div");
@@ -690,14 +908,14 @@ function closeImageModal() {
         statusButton.classList.add("action-btn", "status-btn");
         statusButton.textContent = "Change Status";
         statusButton.onclick = function () {
-          toggleStatus(index);
+          toggleStatus(report);
         };
 
         const deleteButton = document.createElement("button");
         deleteButton.classList.add("action-btn", "delete-btn");
         deleteButton.textContent = "Delete";
         deleteButton.onclick = function () {
-          deleteReport(index);
+          deleteReport(report.id);
         };
 
         actions.appendChild(statusButton);
@@ -708,87 +926,116 @@ function closeImageModal() {
       return div;
     }
 
-    function renderMyReports() {
-      const reports = getReports();
+    async function renderMyReports() {
       myReportsList.innerHTML = "";
 
-      if (reports.length === 0) {
+      const { data, error } = await supabase
+        .from("reports")
+        .select("*")
+        .order("submitted_date", { ascending: false });
+
+      if (error) {
+        myReportsList.innerHTML = '<p class="empty-text">Could not load reports.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
         myReportsList.innerHTML = '<p class="empty-text">No reports submitted yet.</p>';
         return;
       }
 
-      reports.forEach(report => {
-        myReportsList.appendChild(createReportCard(report, null, false));
+      data.forEach(report => {
+        myReportsList.appendChild(createReportCard(report, false));
       });
     }
 
-    function renderLandlordReports() {
-      const reports = getReports();
+    async function renderLandlordReports() {
       landlordReportsList.innerHTML = "";
 
-      if (reports.length === 0) {
+      const { data, error } = await supabase
+        .from("reports")
+        .select("*")
+        .order("submitted_date", { ascending: false });
+
+      if (error) {
+        landlordReportsList.innerHTML = '<p class="empty-text">Could not load reports.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
         landlordReportsList.innerHTML = '<p class="empty-text">No reports available yet.</p>';
         return;
       }
 
-      reports.forEach((report, index) => {
-        landlordReportsList.appendChild(createReportCard(report, index, true));
+      data.forEach(report => {
+        landlordReportsList.appendChild(createReportCard(report, true));
       });
     }
 
-    function renderAllReports() {
-      renderMyReports();
-      renderLandlordReports();
+    async function renderAllReports() {
+      if (!currentProfile) return;
+
+      if (currentProfile.role === "tenant") {
+        await renderMyReports();
+      }
+
+      if (currentProfile.role === "landlord") {
+        await renderLandlordReports();
+      }
     }
 
-    function toggleStatus(index) {
-      const reports = getReports();
-
-      if (!reports[index]) return;
-
-      const currentStatus = reports[index].status || "Open";
+    async function toggleStatus(report) {
       let newStatus = "Open";
 
-      if (currentStatus === "Open") {
+      if (report.status === "Open") {
         newStatus = "In Progress";
-      } else if (currentStatus === "In Progress") {
+      } else if (report.status === "In Progress") {
         newStatus = "Resolved";
       } else {
         newStatus = "Open";
       }
 
-      const updateDate = getFormattedDate();
+      const { error } = await supabase
+        .from("reports")
+        .update({
+          status: newStatus,
+          last_updated: new Date().toISOString()
+        })
+        .eq("id", report.id);
 
-      reports[index].status = newStatus;
-      reports[index].lastUpdated = updateDate;
-
-      if (!reports[index].statusHistory) {
-        reports[index].statusHistory = [];
+      if (error) {
+        alert(error.message);
+        return;
       }
 
-      reports[index].statusHistory.push("Status changed to " + newStatus + " on " + updateDate);
-
-      saveReports(reports);
       renderAllReports();
     }
 
-    function deleteReport(index) {
-      const reports = getReports();
-
-      if (!reports[index]) return;
-
+    async function deleteReport(reportId) {
       const confirmDelete = confirm("Are you sure you want to delete this report?");
-
       if (!confirmDelete) return;
 
-      reports.splice(index, 1);
-      saveReports(reports);
+      const { error } = await supabase
+        .from("reports")
+        .delete()
+        .eq("id", reportId);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
       renderAllReports();
     }
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       clearMessages();
+
+      if (!currentUser || currentProfile.role !== "tenant") {
+        errorMessage.textContent = "Only tenants can submit reports.";
+        return;
+      }
 
       const category = document.getElementById("category").value;
       const location = cleanInput(document.getElementById("location").value);
@@ -810,31 +1057,27 @@ function closeImageModal() {
         return;
       }
 
-      if (description.length > 500) {
-        errorMessage.textContent = "Description is too long. Please keep it under 500 characters.";
-        return;
-      }
-
       if (!validatePhoto(file)) {
         return;
       }
 
-      const createdDate = getFormattedDate();
+      const now = new Date().toISOString();
 
-      const newReport = {
+      const { error } = await supabase.from("reports").insert({
+        tenant_id: currentUser.id,
         category: category,
         location: location,
         description: description,
+        photo_url: uploadedImageData || null,
         status: "Open",
-        submittedDate: createdDate,
-        lastUpdated: createdDate,
-        statusHistory: ["Report submitted on " + createdDate],
-        photo: uploadedImageData
-      };
+        submitted_date: now,
+        last_updated: now
+      });
 
-      const reports = getReports();
-      reports.push(newReport);
-      saveReports(reports);
+      if (error) {
+        errorMessage.textContent = error.message;
+        return;
+      }
 
       form.reset();
       uploadedImageData = "";
@@ -845,7 +1088,17 @@ function closeImageModal() {
       renderAllReports();
     });
 
-    renderAllReports();
+    async function checkExistingSession() {
+      const { data } = await supabase.auth.getSession();
+
+      if (data.session && data.session.user) {
+        currentUser = data.session.user;
+        await loadProfile();
+        showApp();
+      }
+    }
+
+    checkExistingSession();
   </script>
 </body>
 </html>
