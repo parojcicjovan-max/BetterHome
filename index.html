@@ -146,6 +146,7 @@
       margin: 18px 0 8px;
       font-weight: bold;
       color: #0f172a;
+      text-align: left;
     }
 
     input[type="text"],
@@ -355,6 +356,10 @@
       display: none;
     }
 
+    .home-screen.active {
+      display: block;
+    }
+
     .auth-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -430,8 +435,8 @@
       </p>
 
       <div class="auth-tabs">
-        <button id="loginTab" class="active" onclick="setAuthMode('login')">Login</button>
-        <button id="signupTab" onclick="setAuthMode('signup')">Sign Up</button>
+        <button type="button" id="loginTab" class="active">Login</button>
+        <button type="button" id="signupTab">Sign Up</button>
       </div>
 
       <label for="authEmail">Email</label>
@@ -451,7 +456,7 @@
         </select>
       </div>
 
-      <button id="authButton" class="menu-btn" onclick="handleAuth()">Login</button>
+      <button type="button" id="authButton" class="menu-btn">Login</button>
       <p id="authMessage" class="error-message"></p>
     </div>
 
@@ -488,15 +493,15 @@
             </div>
           </div>
 
-          <button id="tenantReportBtn" class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
-          <button id="tenantMyReportsBtn" class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
-          <button id="landlordBtn" class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
-          <button class="menu-btn logout-btn" onclick="logout()">Logout</button>
+          <button type="button" id="tenantReportBtn" class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
+          <button type="button" id="tenantMyReportsBtn" class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
+          <button type="button" id="landlordBtn" class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
+          <button type="button" class="menu-btn logout-btn" onclick="logout()">Logout</button>
         </div>
       </div>
 
       <div id="reportSection" class="section">
-        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <button type="button" class="back-btn" onclick="goHome()">← Back to Home</button>
         <h2>Report New Issue</h2>
 
         <form id="issueForm">
@@ -543,7 +548,7 @@
       </div>
 
       <div id="myReportsSection" class="section">
-        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <button type="button" class="back-btn" onclick="goHome()">← Back to Home</button>
         <h2>View My Reports</h2>
         <div id="myReportsList">
           <p class="empty-text">No reports submitted yet.</p>
@@ -551,7 +556,7 @@
       </div>
 
       <div id="landlordSection" class="section">
-        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <button type="button" class="back-btn" onclick="goHome()">← Back to Home</button>
         <h2>Landlord Dashboard</h2>
         <div id="landlordReportsList">
           <p class="empty-text">No reports available yet.</p>
@@ -561,7 +566,7 @@
   </div>
 
   <div id="imageModal" class="image-modal" onclick="closeImageModal()">
-    <button class="close-modal" onclick="closeImageModal()">Close</button>
+    <button type="button" class="close-modal" onclick="closeImageModal()">Close</button>
     <img id="modalImage" src="" alt="Full issue image">
   </div>
 
@@ -588,9 +593,22 @@
     let currentProfile = null;
     let uploadedImageData = "";
 
+    document.getElementById("loginTab").addEventListener("click", function () {
+      setAuthMode("login");
+    });
+
+    document.getElementById("signupTab").addEventListener("click", function () {
+      setAuthMode("signup");
+    });
+
+    document.getElementById("authButton").addEventListener("click", function () {
+      handleAuth();
+    });
+
     function setAuthMode(mode) {
       authMode = mode;
       authMessage.textContent = "";
+      authMessage.className = "error-message";
 
       document.getElementById("loginTab").classList.toggle("active", mode === "login");
       document.getElementById("signupTab").classList.toggle("active", mode === "signup");
@@ -608,6 +626,7 @@
 
     async function signUp() {
       authMessage.textContent = "";
+      authMessage.className = "error-message";
 
       const email = document.getElementById("authEmail").value.trim();
       const password = document.getElementById("authPassword").value;
@@ -640,11 +659,16 @@
         return;
       }
 
-      await supabase.from("profiles").insert({
+      const { error: profileError } = await supabase.from("profiles").insert({
         id: data.user.id,
         full_name: fullName,
         role: role
       });
+
+      if (profileError) {
+        authMessage.textContent = profileError.message;
+        return;
+      }
 
       authMessage.className = "success-message";
       authMessage.textContent = "Account created successfully. You can log in now.";
@@ -686,17 +710,17 @@
         .single();
 
       if (error || !data) {
+        const { error: insertError } = await supabase.from("profiles").insert({
+          id: currentUser.id,
+          full_name: currentUser.email,
+          role: "tenant"
+        });
+
         currentProfile = {
           id: currentUser.id,
           full_name: currentUser.email,
           role: "tenant"
         };
-
-        await supabase.from("profiles").insert({
-          id: currentUser.id,
-          full_name: currentUser.email,
-          role: "tenant"
-        });
       } else {
         currentProfile = data;
       }
@@ -905,6 +929,7 @@
         actions.classList.add("report-actions");
 
         const statusButton = document.createElement("button");
+        statusButton.type = "button";
         statusButton.classList.add("action-btn", "status-btn");
         statusButton.textContent = "Change Status";
         statusButton.onclick = function () {
@@ -912,6 +937,7 @@
         };
 
         const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
         deleteButton.classList.add("action-btn", "delete-btn");
         deleteButton.textContent = "Delete";
         deleteButton.onclick = function () {
