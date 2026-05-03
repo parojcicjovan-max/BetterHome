@@ -13,76 +13,102 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #eff6ff, #f3f4f6);
-      color: #111827;
+      background: linear-gradient(135deg, #e0f2fe, #f8fafc, #dcfce7);
+      color: #0f172a;
+      min-height: 100vh;
     }
 
     .wrapper {
       width: 100%;
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 35px 20px;
       text-align: center;
     }
 
-    .tagline {
-      margin-bottom: 18px;
-      font-size: 14px;
-      color: #2563eb;
-      font-weight: bold;
-      background: #dbeafe;
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
+    .home-card,
+    .section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 28px;
+      padding: 45px;
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(226, 232, 240, 0.9);
     }
 
     h1 {
-      font-size: 60px;
-      margin-bottom: 10px;
+      font-size: 72px;
+      margin: 0;
       color: #1e3a8a;
+      letter-spacing: -2px;
     }
 
     .subtitle {
-      font-size: 24px;
-      margin-bottom: 15px;
-      color: #374151;
-      line-height: 1.4;
+      font-size: 23px;
+      margin: 15px auto 10px;
+      color: #334155;
+      max-width: 720px;
+      line-height: 1.5;
     }
 
-    .intro-text {
-      max-width: 700px;
-      margin: 0 auto 35px;
-      color: #6b7280;
-      font-size: 17px;
+    .small-text {
+      color: #64748b;
+      font-size: 16px;
+      max-width: 760px;
+      margin: 0 auto 32px;
       line-height: 1.6;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 35px 0;
+    }
+
+    .feature-card {
+      background: #f8fafc;
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid #e2e8f0;
+      text-align: left;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+      color: #1e3a8a;
+      font-size: 20px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.5;
+      font-size: 14px;
     }
 
     .menu-btn {
       display: block;
       width: 100%;
-      background: #22c55e;
+      background: linear-gradient(135deg, #2563eb, #16a34a);
       color: white;
       border: none;
-      border-radius: 14px;
-      padding: 24px;
-      font-size: 25px;
+      border-radius: 18px;
+      padding: 23px;
+      font-size: 24px;
       margin-bottom: 18px;
       cursor: pointer;
-      transition: 0.2s ease;
-      box-shadow: 0 8px 18px rgba(34, 197, 94, 0.25);
+      font-weight: bold;
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.22);
+      transition: 0.2s;
     }
 
     .menu-btn:hover {
-      background: #16a34a;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      opacity: 0.95;
     }
 
     .section {
       display: none;
-      background: white;
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.09);
       text-align: left;
       margin-top: 20px;
     }
@@ -92,14 +118,28 @@
     }
 
     .section h2 {
-      margin-top: 0;
+      margin-top: 10px;
       color: #1e3a8a;
+      font-size: 34px;
+    }
+
+    .back-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      font-weight: bold;
     }
 
     label {
       display: block;
-      margin: 16px 0 8px;
+      margin: 18px 0 8px;
       font-weight: bold;
+      color: #0f172a;
     }
 
     input[type="text"],
@@ -107,45 +147,136 @@
     select,
     input[type="file"] {
       width: 100%;
-      padding: 13px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      font-size: 15px;
+      padding: 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      font-size: 16px;
+      background: white;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
     }
 
     textarea {
-      min-height: 120px;
+      min-height: 130px;
       resize: vertical;
-    }
-
-    .submit-btn,
-    .back-btn,
-    .action-btn {
-      border: none;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 15px;
-      cursor: pointer;
-      color: white;
     }
 
     .submit-btn {
       width: 100%;
-      margin-top: 18px;
-      background: #16a34a;
+      margin-top: 22px;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 17px;
+      cursor: pointer;
+      font-weight: bold;
     }
 
-    .submit-btn:hover {
-      background: #15803d;
+    .success-message {
+      margin-top: 16px;
+      color: #166534;
+      font-weight: bold;
     }
 
-    .back-btn {
-      background: #2563eb;
+    .error-message {
+      margin-top: 16px;
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
+    .empty-text {
+      color: #64748b;
+      background: #f8fafc;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .report-item {
+      background: #f8fafc;
+      border: 1px solid #dbe3ef;
+      border-radius: 22px;
+      padding: 24px;
       margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
     }
 
-    .back-btn:hover {
-      background: #1d4ed8;
+    .report-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .report-item h3 {
+      margin: 0;
+      font-size: 26px;
+      color: #0f172a;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: bold;
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .report-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .meta-box {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 13px;
+      color: #334155;
+      font-size: 15px;
+    }
+
+    .meta-box strong {
+      color: #0f172a;
+    }
+
+    .description-box {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 15px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .action-btn {
+      border: none;
+      border-radius: 13px;
+      padding: 12px 16px;
+      font-size: 15px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
     }
 
     .status-btn {
@@ -156,71 +287,13 @@
       background: #dc2626;
     }
 
-    .success-message {
-      margin-top: 14px;
-      color: #166534;
-      font-weight: bold;
-    }
-
-    .error-message {
-      margin-top: 14px;
-      color: #b91c1c;
-      font-weight: bold;
-    }
-
-    .empty-text {
-      color: #6b7280;
-    }
-
-    .security-note {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      color: #1e3a8a;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    .report-item {
-      background: #f9fafb;
-      border: 1px solid #d1d5db;
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 15px;
-    }
-
-    .report-item h3 {
-      margin-top: 0;
-      color: #111827;
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: bold;
-      background: #dbeafe;
-      color: #1d4ed8;
-      margin-top: 8px;
-    }
-
-    .report-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 15px;
-    }
-
     .preview-image,
     .report-image {
       width: 100%;
-      max-width: 220px;
-      border-radius: 10px;
-      margin-top: 12px;
-      border: 1px solid #d1d5db;
+      max-width: 260px;
+      border-radius: 14px;
+      margin-top: 15px;
+      border: 1px solid #cbd5e1;
       display: block;
     }
 
@@ -231,63 +304,78 @@
     .home-screen {
       display: none;
     }
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+}
 
-    .feature-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin: 30px 0;
-    }
+.image-modal.active {
+  display: flex;
+}
 
-    .feature-card {
-      background: white;
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-      text-align: center;
-      border: 1px solid #e5e7eb;
-    }
+.image-modal img {
+  max-width: 95%;
+  max-height: 90vh;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
 
-    .feature-card h3 {
-      margin: 8px 0;
-      color: #1e3a8a;
-    }
+.close-modal {
+  position: fixed;
+  top: 25px;
+  right: 30px;
+  background: white;
+  color: #111827;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .feature-card p {
-      color: #6b7280;
-      font-size: 14px;
-      line-height: 1.4;
-    }
+.report-image {
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-    @media (max-width: 700px) {
-      .feature-row {
-        grid-template-columns: 1fr;
-      }
-
-      .wrapper {
-        margin: 10px auto;
-        padding: 14px;
+.report-image:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+    @media (max-width: 750px) {
+      .home-card,
+      .section {
+        padding: 25px;
       }
 
       h1 {
-        font-size: 40px;
+        font-size: 46px;
       }
 
       .subtitle {
-        font-size: 19px;
+        font-size: 18px;
       }
 
-      .intro-text {
-        font-size: 15px;
+      .feature-grid,
+      .report-meta {
+        grid-template-columns: 1fr;
       }
 
       .menu-btn {
-        font-size: 20px;
+        font-size: 19px;
         padding: 18px;
       }
 
-      .section {
-        padding: 20px;
+      .report-top {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -295,51 +383,46 @@
 
 <body>
   <div class="wrapper">
+
     <div id="homeScreen" class="home-screen active">
-      <div class="tagline">Built for tenants in New York City</div>
+      <div class="home-card">
+        <h1>BetterHome</h1>
 
-      <h1>BetterHome</h1>
+        <p class="subtitle">
+          A clean and simple platform for reporting apartment issues and tracking repair updates.
+        </p>
 
-      <p class="subtitle">
-        Report apartment problems easily and track repairs in one place.
-      </p>
+        <p class="small-text">
+          Tenants can submit maintenance reports with photos, descriptions, and automatic dates.
+          Landlords can review each issue, update the repair status, and keep everything organized.
+        </p>
 
-      <p class="intro-text">
-        BetterHome helps tenants document issues like mold, leaks, pests, broken heaters,
-        and unsafe living conditions. Tenants can submit reports with details and photos,
-        while landlords can review and update the repair status.
-      </p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Report Issues</h3>
+            <p>Submit problems like mold, leaks, pests, broken heaters, or damaged appliances.</p>
+          </div>
 
-      <div class="feature-row">
-        <div class="feature-card">
-          <h3>📸 Report</h3>
-          <p>Submit apartment issues with location, description, and photo proof.</p>
+          <div class="feature-card">
+            <h3>Track Progress</h3>
+            <p>Every report includes a submitted date, current status, and last update.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>Manage Repairs</h3>
+            <p>Landlords can change status from Open to In Progress to Resolved.</p>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <h3>📂 Track</h3>
-          <p>View submitted reports and follow the status of each repair request.</p>
-        </div>
-
-        <div class="feature-card">
-          <h3>🏢 Manage</h3>
-          <p>Landlords can review issues, update statuses, and keep records organized.</p>
-        </div>
+        <button class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
+        <button class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
+        <button class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
       </div>
-
-      <button class="menu-btn" onclick="showSection('reportSection')">📸 Report an Issue</button>
-      <button class="menu-btn" onclick="showSection('myReportsSection')">📂 View My Reports</button>
-      <button class="menu-btn" onclick="showSection('landlordSection')">🏢 Landlord Dashboard</button>
     </div>
 
     <div id="reportSection" class="section">
       <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>Report an Issue</h2>
-
-      <p class="security-note">
-        Privacy note: This is a class prototype. Reports are saved only in this browser using localStorage.
-        Do not enter private information such as phone numbers, passwords, or personal documents.
-      </p>
+      <h2>Report New Issue</h2>
 
       <form id="issueForm">
         <label for="category">Issue Category</label>
@@ -386,7 +469,7 @@
 
     <div id="myReportsSection" class="section">
       <button class="back-btn" onclick="goHome()">← Back to Home</button>
-      <h2>My Reports</h2>
+      <h2>View My Reports</h2>
       <div id="myReportsList">
         <p class="empty-text">No reports submitted yet.</p>
       </div>
@@ -400,7 +483,10 @@
       </div>
     </div>
   </div>
-
+<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+  <button class="close-modal" onclick="closeImageModal()">Close</button>
+  <img id="modalImage" src="" alt="Full issue image">
+</div>
   <script>
     const homeScreen = document.getElementById("homeScreen");
     const sections = document.querySelectorAll(".section");
@@ -414,6 +500,16 @@
 
     let uploadedImageData = "";
 
+    function getFormattedDate() {
+      return new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      });
+    }
+
     function showSection(sectionId) {
       homeScreen.classList.remove("active");
       homeScreen.style.display = "none";
@@ -422,7 +518,21 @@
         section.classList.remove("active");
         section.style.display = "none";
       });
+function openImageModal(imageSrc) {
+  const modal = document.getElementById("imageModal");
+  const modalImage = document.getElementById("modalImage");
 
+  modalImage.src = imageSrc;
+  modal.classList.add("active");
+}
+
+function closeImageModal() {
+  const modal = document.getElementById("imageModal");
+  const modalImage = document.getElementById("modalImage");
+
+  modal.classList.remove("active");
+  modalImage.src = "";
+}
       const selectedSection = document.getElementById(sectionId);
       selectedSection.classList.add("active");
       selectedSection.style.display = "block";
@@ -512,50 +622,65 @@
       reader.readAsDataURL(file);
     });
 
-    function createTextElement(tag, label, value) {
-      const element = document.createElement(tag);
-
-      if (label) {
-        const strong = document.createElement("strong");
-        strong.textContent = label + ": ";
-        element.appendChild(strong);
-      }
-
-      element.appendChild(document.createTextNode(value));
-      return element;
+    function safeDate(value) {
+      return value || "Unknown date";
     }
 
     function createReportCard(report, index, showActions) {
       const div = document.createElement("div");
       div.classList.add("report-item");
 
+      const top = document.createElement("div");
+      top.classList.add("report-top");
+
       const title = document.createElement("h3");
-      title.textContent = report.category;
-      div.appendChild(title);
-
-      div.appendChild(createTextElement("p", "Location", report.location));
-      div.appendChild(createTextElement("p", "Description", report.description));
-      div.appendChild(createTextElement("p", "Date Submitted", report.date));
-
-      const statusP = document.createElement("p");
-      const statusStrong = document.createElement("strong");
-      statusStrong.textContent = "Status: ";
+      title.textContent = report.category || "Issue Report";
 
       const statusSpan = document.createElement("span");
       statusSpan.classList.add("status-badge");
-      statusSpan.textContent = report.status;
+      statusSpan.textContent = report.status || "Open";
 
-      statusP.appendChild(statusStrong);
-      statusP.appendChild(statusSpan);
-      div.appendChild(statusP);
+      top.appendChild(title);
+      top.appendChild(statusSpan);
+      div.appendChild(top);
+
+      const meta = document.createElement("div");
+      meta.classList.add("report-meta");
+
+      meta.innerHTML = `
+        <div class="meta-box"><strong>Location:</strong><br>${report.location || "Not provided"}</div>
+        <div class="meta-box"><strong>Date Submitted:</strong><br>${safeDate(report.submittedDate || report.date)}</div>
+        <div class="meta-box"><strong>Last Updated:</strong><br>${safeDate(report.lastUpdated)}</div>
+        <div class="meta-box"><strong>Status:</strong><br>${report.status || "Open"}</div>
+      `;
+
+      div.appendChild(meta);
+
+      const description = document.createElement("div");
+      description.classList.add("description-box");
+      description.innerHTML = `<strong>Description:</strong><br>${report.description || "No description"}`;
+      div.appendChild(description);
+
+      if (report.statusHistory && report.statusHistory.length > 0) {
+        const history = document.createElement("div");
+        history.classList.add("description-box");
+        history.innerHTML = `<strong>Status History:</strong><br>${report.statusHistory.join("<br>")}`;
+        div.appendChild(history);
+      }
 
       if (report.photo) {
-        const img = document.createElement("img");
-        img.src = report.photo;
-        img.classList.add("report-image");
-        img.alt = "Issue image";
-        div.appendChild(img);
-      }
+  const img = document.createElement("img");
+  img.src = report.photo;
+  img.classList.add("report-image");
+  img.alt = "Issue image";
+  img.title = "Click to open image";
+
+  img.onclick = function () {
+    openImageModal(report.photo);
+  };
+
+  div.appendChild(img);
+}
 
       if (showActions) {
         const actions = document.createElement("div");
@@ -621,15 +746,27 @@
 
       if (!reports[index]) return;
 
-      const currentStatus = reports[index].status;
+      const currentStatus = reports[index].status || "Open";
+      let newStatus = "Open";
 
       if (currentStatus === "Open") {
-        reports[index].status = "In Progress";
+        newStatus = "In Progress";
       } else if (currentStatus === "In Progress") {
-        reports[index].status = "Resolved";
+        newStatus = "Resolved";
       } else {
-        reports[index].status = "Open";
+        newStatus = "Open";
       }
+
+      const updateDate = getFormattedDate();
+
+      reports[index].status = newStatus;
+      reports[index].lastUpdated = updateDate;
+
+      if (!reports[index].statusHistory) {
+        reports[index].statusHistory = [];
+      }
+
+      reports[index].statusHistory.push("Status changed to " + newStatus + " on " + updateDate);
 
       saveReports(reports);
       renderAllReports();
@@ -682,12 +819,16 @@
         return;
       }
 
+      const createdDate = getFormattedDate();
+
       const newReport = {
         category: category,
         location: location,
         description: description,
         status: "Open",
-        date: new Date().toLocaleDateString(),
+        submittedDate: createdDate,
+        lastUpdated: createdDate,
+        statusHistory: ["Report submitted on " + createdDate],
         photo: uploadedImageData
       };
 
