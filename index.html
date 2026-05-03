@@ -1,167 +1,1031 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>BetterHome</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetterHome</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#e0f2fe,#f8fafc,#dcfce7);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
+  <style>
+    * { box-sizing: border-box; }
 
-.card{
-background:white;
-padding:40px;
-border-radius:20px;
-width:350px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
-text-align:center;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #e0f2fe, #f8fafc, #dcfce7);
+      color: #0f172a;
+      min-height: 100vh;
+    }
 
-h1{
-color:#1e3a8a;
-margin-bottom:10px;
-}
+    .wrapper {
+      width: 100%;
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 35px 20px;
+      text-align: center;
+    }
 
-input,select{
-width:100%;
-padding:14px;
-margin-top:10px;
-border-radius:10px;
-border:1px solid #ccc;
-}
+    .home-card, .section {
+      background: rgba(255,255,255,0.95);
+      border-radius: 28px;
+      padding: 45px;
+      box-shadow: 0 25px 60px rgba(15,23,42,0.12);
+      border: 1px solid rgba(226,232,240,0.9);
+    }
 
-button{
-width:100%;
-padding:16px;
-margin-top:15px;
-border:none;
-border-radius:12px;
-font-size:16px;
-color:white;
-background:linear-gradient(135deg,#2563eb,#16a34a);
-cursor:pointer;
-}
+    h1 {
+      font-size: 72px;
+      margin: 0;
+      color: #1e3a8a;
+      letter-spacing: -2px;
+    }
 
-.tab{
-display:flex;
-gap:10px;
-margin-bottom:15px;
-}
+    .subtitle {
+      font-size: 23px;
+      margin: 15px auto 10px;
+      color: #334155;
+      max-width: 720px;
+      line-height: 1.5;
+    }
 
-.tab button{
-background:#ddd;
-color:black;
-}
+    .small-text {
+      color: #64748b;
+      font-size: 16px;
+      max-width: 760px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
 
-.tab button.active{
-background:#2563eb;
-color:white;
-}
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 35px 0;
+    }
 
-.hidden{display:none;}
+    .feature-card {
+      background: #f8fafc;
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid #e2e8f0;
+      text-align: left;
+    }
 
-</style>
+    .feature-card h3 {
+      margin: 0 0 8px;
+      color: #1e3a8a;
+      font-size: 20px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .menu-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #16a34a);
+      color: white;
+      border: none;
+      border-radius: 18px;
+      padding: 23px;
+      font-size: 24px;
+      margin-bottom: 18px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 14px 30px rgba(37,99,235,0.22);
+      transition: 0.2s;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-3px);
+      opacity: 0.95;
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+    }
+
+    .section {
+      display: none;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .section.active { display: block; }
+
+    .section h2 {
+      margin-top: 10px;
+      color: #1e3a8a;
+      font-size: 34px;
+    }
+
+    .back-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 8px;
+      font-weight: bold;
+      color: #0f172a;
+      text-align: left;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      font-size: 16px;
+      background: white;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 22px;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 17px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .success-message {
+      margin-top: 16px;
+      color: #166534;
+      font-weight: bold;
+    }
+
+    .error-message {
+      margin-top: 16px;
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
+    .empty-text {
+      color: #64748b;
+      background: #f8fafc;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .report-item {
+      background: #f8fafc;
+      border: 1px solid #dbe3ef;
+      border-radius: 22px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.06);
+    }
+
+    .report-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .report-item h3 {
+      margin: 0;
+      font-size: 26px;
+      color: #0f172a;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: bold;
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .report-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .meta-box {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 13px;
+      color: #334155;
+      font-size: 15px;
+    }
+
+    .meta-box strong { color: #0f172a; }
+
+    .description-box {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 15px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .action-btn {
+      border: none;
+      border-radius: 13px;
+      padding: 12px 16px;
+      font-size: 15px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+    }
+
+    .status-btn { background: #f59e0b; }
+    .delete-btn { background: #dc2626; }
+
+    .preview-image, .report-image {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 14px;
+      margin-top: 15px;
+      border: 1px solid #cbd5e1;
+      display: block;
+    }
+
+    .report-image {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .report-image:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      background: rgba(15,23,42,0.85);
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+    }
+
+    .image-modal.active { display: flex; }
+
+    .image-modal img {
+      max-width: 95%;
+      max-height: 90vh;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .close-modal {
+      position: fixed;
+      top: 25px;
+      right: 30px;
+      background: white;
+      color: #111827;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 25px 0;
+    }
+
+    .auth-tabs button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .auth-tabs button.active {
+      background: #2563eb;
+      color: white;
+    }
+
+    .user-bar {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e3a8a;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 25px;
+      font-weight: bold;
+    }
+
+    .home-screen { display: none; }
+    .home-screen.active { display: block; }
+
+    @media (max-width: 750px) {
+      .home-card, .section { padding: 25px; }
+      h1 { font-size: 46px; }
+      .subtitle { font-size: 18px; }
+      .feature-grid, .report-meta { grid-template-columns: 1fr; }
+      .menu-btn { font-size: 19px; padding: 18px; }
+      .report-top { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrapper">
 
-<div class="card">
+    <div id="authScreen" class="home-card">
+      <h1>BetterHome</h1>
+      <p class="subtitle">Secure login for tenants and landlords.</p>
+      <p class="small-text">Create an account, choose your role, and access only the features connected to your account.</p>
 
-<h1>BetterHome</h1>
+      <div class="auth-tabs">
+        <button type="button" id="loginTab" class="active">Login</button>
+        <button type="button" id="signupTab">Sign Up</button>
+      </div>
 
-<div class="tab">
-<button id="loginBtn" class="active">Login</button>
-<button id="signupBtn">Sign Up</button>
-</div>
+      <label>Email</label>
+      <input type="email" id="authEmail" placeholder="Enter your email" />
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+      <label>Password</label>
+      <input type="password" id="authPassword" placeholder="Enter your password" />
 
-<div id="signupFields" class="hidden">
-<input id="name" placeholder="Full name">
-<select id="role">
-<option value="tenant">Tenant</option>
-<option value="landlord">Landlord</option>
-</select>
-</div>
+      <div id="signupFields" style="display:none;">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Example: Jovan Parojcic" />
 
-<button id="mainBtn">Login</button>
+        <label>Account Type</label>
+        <select id="userRole">
+          <option value="tenant">Tenant</option>
+          <option value="landlord">Landlord</option>
+        </select>
+      </div>
 
-<p id="msg"></p>
+      <button type="button" id="authButton" class="menu-btn">Login</button>
+      <p id="authMessage" class="error-message"></p>
+    </div>
 
-</div>
+    <div id="appScreen" style="display:none;">
+      <div id="homeScreen" class="home-screen active">
+        <div class="home-card">
+          <h1>BetterHome</h1>
+          <div id="userBar" class="user-bar"></div>
 
-<script>
+          <p class="subtitle">A clean and simple platform for reporting apartment issues and tracking repair updates.</p>
+          <p class="small-text">Tenants can submit maintenance reports with photos, descriptions, and automatic dates. Landlords can review each issue and update the repair status.</p>
 
-const client = window.supabase.createClient(
-"https://snltjzmkgxtjpeadlpna.supabase.co",
-"sb_publishable_frhRltGUxG1Ap_FTMuXCxg_Y3UsMqrd"
-);
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>Report Issues</h3>
+              <p>Submit problems like mold, leaks, pests, broken heaters, or damaged appliances.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Track Progress</h3>
+              <p>Every report includes submitted date, current status, and last update.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Manage Repairs</h3>
+              <p>Landlords can change status from Open to In Progress to Resolved.</p>
+            </div>
+          </div>
 
-let mode="login";
+          <button id="tenantReportBtn" class="menu-btn" onclick="showSection('reportSection')">Report New Issue</button>
+          <button id="tenantMyReportsBtn" class="menu-btn" onclick="showSection('myReportsSection')">View My Reports</button>
+          <button id="landlordBtn" class="menu-btn" onclick="showSection('landlordSection')">Landlord Dashboard</button>
+          <button class="menu-btn logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
 
-loginBtn.onclick=()=>{
-mode="login";
-signupFields.classList.add("hidden");
-mainBtn.innerText="Login";
-loginBtn.classList.add("active");
-signupBtn.classList.remove("active");
-}
+      <div id="reportSection" class="section">
+        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <h2>Report New Issue</h2>
 
-signupBtn.onclick=()=>{
-mode="signup";
-signupFields.classList.remove("hidden");
-mainBtn.innerText="Create Account";
-signupBtn.classList.add("active");
-loginBtn.classList.remove("active");
-}
+        <form id="issueForm">
+          <label>Issue Category</label>
+          <select id="category" required>
+            <option value="">Select an issue</option>
+            <option value="Mold">Mold</option>
+            <option value="Leak">Leak</option>
+            <option value="Pest">Pest</option>
+            <option value="Broken Heater">Broken Heater</option>
+            <option value="Electrical Problem">Electrical Problem</option>
+            <option value="Broken Appliance">Broken Appliance</option>
+            <option value="Other">Other</option>
+          </select>
 
-mainBtn.onclick=async()=>{
+          <label>Location</label>
+          <input type="text" id="location" placeholder="Example: Bathroom ceiling" required minlength="3" maxlength="80" />
 
-msg.innerText="";
+          <label>Description</label>
+          <textarea id="description" placeholder="Describe the apartment issue..." required minlength="10" maxlength="500"></textarea>
 
-if(mode==="signup"){
+          <label>Upload Photo</label>
+          <input type="file" id="photo" accept="image/jpeg, image/png, image/webp" />
+          <img id="photoPreview" class="preview-image" style="display:none;" alt="Photo preview" />
 
-const {data,error}=await client.auth.signUp({
-email:email.value,
-password:password.value
-});
+          <button type="submit" class="submit-btn">Submit Issue Report</button>
+          <p id="successMessage" class="success-message"></p>
+          <p id="errorMessage" class="error-message"></p>
+        </form>
+      </div>
 
-if(error)return msg.innerText=error.message;
+      <div id="myReportsSection" class="section">
+        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <h2>View My Reports</h2>
+        <div id="myReportsList"></div>
+      </div>
 
-await client.from("profiles").insert({
-id:data.user.id,
-full_name:name.value,
-role:role.value
-});
+      <div id="landlordSection" class="section">
+        <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        <h2>Landlord Dashboard</h2>
+        <div id="landlordReportsList"></div>
+      </div>
+    </div>
+  </div>
 
-msg.innerText="Account created ✔";
+  <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <button type="button" class="close-modal" onclick="closeImageModal()">Close</button>
+    <img id="modalImage" src="" alt="Full issue image">
+  </div>
 
-}else{
+  <script>
+    const client = window.supabase.createClient(
+      "https://snltjzmkgxtjpeadlpna.supabase.co",
+      "sb_publishable_frhRltGUxG1Ap_FTMuXCxg_Y3UsMqrd"
+    );
 
-const {data,error}=await client.auth.signInWithPassword({
-email:email.value,
-password:password.value
-});
+    let authMode = "login";
+    let currentUser = null;
+    let currentProfile = null;
+    let uploadedImageData = "";
 
-if(error)return msg.innerText=error.message;
+    const authScreen = document.getElementById("authScreen");
+    const appScreen = document.getElementById("appScreen");
+    const homeScreen = document.getElementById("homeScreen");
+    const sections = document.querySelectorAll(".section");
+    const form = document.getElementById("issueForm");
+    const photoInput = document.getElementById("photo");
+    const photoPreview = document.getElementById("photoPreview");
+    const successMessage = document.getElementById("successMessage");
+    const errorMessage = document.getElementById("errorMessage");
+    const authMessage = document.getElementById("authMessage");
+    const myReportsList = document.getElementById("myReportsList");
+    const landlordReportsList = document.getElementById("landlordReportsList");
 
-msg.innerText="LOGIN SUCCESS ✔";
-}
+    document.getElementById("loginTab").onclick = function () {
+      setAuthMode("login");
+    };
 
-}
+    document.getElementById("signupTab").onclick = function () {
+      setAuthMode("signup");
+    };
 
-</script>
+    document.getElementById("authButton").onclick = function () {
+      handleAuth();
+    };
 
+    function setAuthMode(mode) {
+      authMode = mode;
+      authMessage.textContent = "";
+      authMessage.className = "error-message";
+
+      document.getElementById("loginTab").classList.toggle("active", mode === "login");
+      document.getElementById("signupTab").classList.toggle("active", mode === "signup");
+      document.getElementById("signupFields").style.display = mode === "signup" ? "block" : "none";
+      document.getElementById("authButton").textContent = mode === "signup" ? "Create Account" : "Login";
+    }
+
+    async function handleAuth() {
+      if (authMode === "signup") {
+        await signUp();
+      } else {
+        await login();
+      }
+    }
+
+    async function signUp() {
+      authMessage.textContent = "";
+      authMessage.className = "error-message";
+
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+      const fullName = cleanInput(document.getElementById("fullName").value);
+      const role = document.getElementById("userRole").value;
+
+      if (!email || !password || !fullName) {
+        authMessage.textContent = "Please enter name, email, and password.";
+        return;
+      }
+
+      if (password.length < 6) {
+        authMessage.textContent = "Password must be at least 6 characters.";
+        return;
+      }
+
+      const { data, error } = await client.auth.signUp({ email, password });
+
+      if (error) {
+        authMessage.textContent = error.message;
+        return;
+      }
+
+      const { error: profileError } = await client.from("profiles").insert({
+        id: data.user.id,
+        full_name: fullName,
+        role: role
+      });
+
+      if (profileError) {
+        authMessage.textContent = profileError.message;
+        return;
+      }
+
+      authMessage.className = "success-message";
+      authMessage.textContent = "Account created. You can log in now.";
+      setAuthMode("login");
+    }
+
+    async function login() {
+      authMessage.textContent = "";
+      authMessage.className = "error-message";
+
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        authMessage.textContent = error.message;
+        return;
+      }
+
+      currentUser = data.user;
+      await loadProfile();
+      showApp();
+    }
+
+    async function loadProfile() {
+      const { data, error } = await client
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .single();
+
+      if (error || !data) {
+        currentProfile = {
+          id: currentUser.id,
+          full_name: currentUser.email,
+          role: "tenant"
+        };
+
+        await client.from("profiles").insert({
+          id: currentUser.id,
+          full_name: currentUser.email,
+          role: "tenant"
+        });
+      } else {
+        currentProfile = data;
+      }
+    }
+
+    function showApp() {
+      authScreen.style.display = "none";
+      appScreen.style.display = "block";
+
+      document.getElementById("userBar").textContent =
+        "Logged in as " + (currentProfile.full_name || currentUser.email) +
+        " | Role: " + currentProfile.role.toUpperCase();
+
+      if (currentProfile.role === "tenant") {
+        document.getElementById("tenantReportBtn").style.display = "block";
+        document.getElementById("tenantMyReportsBtn").style.display = "block";
+        document.getElementById("landlordBtn").style.display = "none";
+      } else {
+        document.getElementById("tenantReportBtn").style.display = "none";
+        document.getElementById("tenantMyReportsBtn").style.display = "none";
+        document.getElementById("landlordBtn").style.display = "block";
+      }
+
+      goHome();
+      renderAllReports();
+    }
+
+    async function logout() {
+      await client.auth.signOut();
+      location.reload();
+    }
+
+    function showSection(sectionId) {
+      homeScreen.style.display = "none";
+
+      sections.forEach(section => {
+        section.classList.remove("active");
+        section.style.display = "none";
+      });
+
+      const selectedSection = document.getElementById(sectionId);
+      selectedSection.classList.add("active");
+      selectedSection.style.display = "block";
+
+      renderAllReports();
+    }
+
+    function goHome() {
+      sections.forEach(section => {
+        section.classList.remove("active");
+        section.style.display = "none";
+      });
+
+      homeScreen.style.display = "block";
+      clearMessages();
+    }
+
+    function clearMessages() {
+      successMessage.textContent = "";
+      errorMessage.textContent = "";
+    }
+
+    function cleanInput(value) {
+      return String(value || "").trim().replace(/[<>]/g, "");
+    }
+
+    function escapeHTML(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getFormattedDate(dateValue) {
+      if (!dateValue) return "Unknown date";
+
+      return new Date(dateValue).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      });
+    }
+
+    function validatePhoto(file) {
+      if (!file) return true;
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      const maxSize = 1 * 1024 * 1024;
+
+      if (!allowedTypes.includes(file.type)) {
+        errorMessage.textContent = "Please upload only JPG, PNG, or WEBP image files.";
+        return false;
+      }
+
+      if (file.size > maxSize) {
+        errorMessage.textContent = "Image is too large. Please upload an image under 1MB.";
+        return false;
+      }
+
+      return true;
+    }
+
+    photoInput.addEventListener("change", function () {
+      clearMessages();
+
+      const file = photoInput.files[0];
+
+      if (!file) {
+        uploadedImageData = "";
+        photoPreview.src = "";
+        photoPreview.style.display = "none";
+        return;
+      }
+
+      if (!validatePhoto(file)) {
+        photoInput.value = "";
+        uploadedImageData = "";
+        photoPreview.src = "";
+        photoPreview.style.display = "none";
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        uploadedImageData = e.target.result;
+        photoPreview.src = uploadedImageData;
+        photoPreview.style.display = "block";
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    function openImageModal(imageSrc) {
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+
+      modalImage.src = imageSrc;
+      modal.classList.add("active");
+    }
+
+    function closeImageModal() {
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+
+      modal.classList.remove("active");
+      modalImage.src = "";
+    }
+
+    function createReportCard(report, showActions) {
+      const div = document.createElement("div");
+      div.classList.add("report-item");
+
+      const top = document.createElement("div");
+      top.classList.add("report-top");
+
+      const title = document.createElement("h3");
+      title.textContent = report.category || "Issue Report";
+
+      const statusSpan = document.createElement("span");
+      statusSpan.classList.add("status-badge");
+      statusSpan.textContent = report.status || "Open";
+
+      top.appendChild(title);
+      top.appendChild(statusSpan);
+      div.appendChild(top);
+
+      const meta = document.createElement("div");
+      meta.classList.add("report-meta");
+
+      meta.innerHTML = `
+        <div class="meta-box"><strong>Location:</strong><br>${escapeHTML(report.location)}</div>
+        <div class="meta-box"><strong>Date Submitted:</strong><br>${getFormattedDate(report.submitted_date)}</div>
+        <div class="meta-box"><strong>Last Updated:</strong><br>${getFormattedDate(report.last_updated)}</div>
+        <div class="meta-box"><strong>Status:</strong><br>${escapeHTML(report.status)}</div>
+      `;
+
+      div.appendChild(meta);
+
+      const description = document.createElement("div");
+      description.classList.add("description-box");
+      description.innerHTML = `<strong>Description:</strong><br>${escapeHTML(report.description)}`;
+      div.appendChild(description);
+
+      if (report.photo_url) {
+        const img = document.createElement("img");
+        img.src = report.photo_url;
+        img.classList.add("report-image");
+        img.alt = "Issue image";
+        img.title = "Click to open image";
+
+        img.onclick = function (event) {
+          event.stopPropagation();
+          openImageModal(report.photo_url);
+        };
+
+        div.appendChild(img);
+      }
+
+      if (showActions) {
+        const actions = document.createElement("div");
+        actions.classList.add("report-actions");
+
+        const statusButton = document.createElement("button");
+        statusButton.type = "button";
+        statusButton.classList.add("action-btn", "status-btn");
+        statusButton.textContent = "Change Status";
+        statusButton.onclick = function () {
+          toggleStatus(report);
+        };
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.classList.add("action-btn", "delete-btn");
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function () {
+          deleteReport(report.id);
+        };
+
+        actions.appendChild(statusButton);
+        actions.appendChild(deleteButton);
+        div.appendChild(actions);
+      }
+
+      return div;
+    }
+
+    async function renderMyReports() {
+      myReportsList.innerHTML = "";
+
+      const { data, error } = await client
+        .from("reports")
+        .select("*")
+        .order("submitted_date", { ascending: false });
+
+      if (error) {
+        myReportsList.innerHTML = '<p class="empty-text">Could not load reports.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        myReportsList.innerHTML = '<p class="empty-text">No reports submitted yet.</p>';
+        return;
+      }
+
+      data.forEach(report => {
+        myReportsList.appendChild(createReportCard(report, false));
+      });
+    }
+
+    async function renderLandlordReports() {
+      landlordReportsList.innerHTML = "";
+
+      const { data, error } = await client
+        .from("reports")
+        .select("*")
+        .order("submitted_date", { ascending: false });
+
+      if (error) {
+        landlordReportsList.innerHTML = '<p class="empty-text">Could not load reports.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        landlordReportsList.innerHTML = '<p class="empty-text">No reports available yet.</p>';
+        return;
+      }
+
+      data.forEach(report => {
+        landlordReportsList.appendChild(createReportCard(report, true));
+      });
+    }
+
+    async function renderAllReports() {
+      if (!currentProfile) return;
+
+      if (currentProfile.role === "tenant") {
+        await renderMyReports();
+      } else {
+        await renderLandlordReports();
+      }
+    }
+
+    async function toggleStatus(report) {
+      let newStatus = "Open";
+
+      if (report.status === "Open") {
+        newStatus = "In Progress";
+      } else if (report.status === "In Progress") {
+        newStatus = "Resolved";
+      }
+
+      const { error } = await client
+        .from("reports")
+        .update({
+          status: newStatus,
+          last_updated: new Date().toISOString()
+        })
+        .eq("id", report.id);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      renderAllReports();
+    }
+
+    async function deleteReport(reportId) {
+      const confirmDelete = confirm("Are you sure you want to delete this report?");
+      if (!confirmDelete) return;
+
+      const { error } = await client
+        .from("reports")
+        .delete()
+        .eq("id", reportId);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      renderAllReports();
+    }
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      clearMessages();
+
+      if (!currentUser || currentProfile.role !== "tenant") {
+        errorMessage.textContent = "Only tenants can submit reports.";
+        return;
+      }
+
+      const category = document.getElementById("category").value;
+      const location = cleanInput(document.getElementById("location").value);
+      const description = cleanInput(document.getElementById("description").value);
+      const file = photoInput.files[0];
+
+      if (!category) {
+        errorMessage.textContent = "Please select an issue category.";
+        return;
+      }
+
+      if (location.length < 3) {
+        errorMessage.textContent = "Please enter a more specific location.";
+        return;
+      }
+
+      if (description.length < 10) {
+        errorMessage.textContent = "Please describe the issue in more detail.";
+        return;
+      }
+
+      if (!validatePhoto(file)) return;
+
+      const now = new Date().toISOString();
+
+      const { error } = await client.from("reports").insert({
+        tenant_id: currentUser.id,
+        category: category,
+        location: location,
+        description: description,
+        photo_url: uploadedImageData || null,
+        status: "Open",
+        submitted_date: now,
+        last_updated: now
+      });
+
+      if (error) {
+        errorMessage.textContent = error.message;
+        return;
+      }
+
+      form.reset();
+      uploadedImageData = "";
+      photoPreview.src = "";
+      photoPreview.style.display = "none";
+
+      successMessage.textContent = "Issue report submitted successfully.";
+      renderAllReports();
+    });
+
+    async function checkExistingSession() {
+      const { data } = await client.auth.getSession();
+
+      if (data.session && data.session.user) {
+        currentUser = data.session.user;
+        await loadProfile();
+        showApp();
+      }
+    }
+
+    checkExistingSession();
+  </script>
 </body>
 </html>
