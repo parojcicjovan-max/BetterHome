@@ -867,8 +867,15 @@
 
       div.appendChild(meta);
 
+     
+      const description = document.createElement("div");
+      description.classList.add("description-box");
+      description.innerHTML = `<strong>Description:</strong><br>${escapeHTML(report.description)}`;
+      div.appendChild(description);
+
       const chatBox = document.createElement("div");
 chatBox.classList.add("description-box");
+
 chatBox.innerHTML = `
   <strong>Messages:</strong>
   <div id="messages-${report.id}" style="margin-top:10px;"></div>
@@ -891,11 +898,6 @@ chatBox.innerHTML = `
 div.appendChild(chatBox);
 
 loadMessages(report.id);
-
-      const description = document.createElement("div");
-      description.classList.add("description-box");
-      description.innerHTML = `<strong>Description:</strong><br>${escapeHTML(report.description)}`;
-      div.appendChild(description);
 
       if (report.photo_url) {
         const img = document.createElement("img");
