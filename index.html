@@ -897,8 +897,9 @@ chatBox.innerHTML = `
 
 div.appendChild(chatBox);
 
-loadMessages(report.id);
-
+setTimeout(function () {
+  loadMessages(report.id);
+}, 0);
       if (report.photo_url) {
         const img = document.createElement("img");
         img.src = report.photo_url;
