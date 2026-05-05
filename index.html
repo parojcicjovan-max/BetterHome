@@ -443,7 +443,19 @@
       <button type="button" id="authButton" class="menu-btn">Login</button>
       <p id="authMessage" class="error-message"></p>
     </div>
+<div id="roleScreen" class="home-card" style="display:none;">
+  <h1>BetterHome</h1>
+  <p class="subtitle">Choose your account type</p>
+  <p class="small-text">Select how you want to use BetterHome.</p>
 
+  <button class="menu-btn" onclick="saveGoogleRole('tenant')">
+    Continue as Tenant
+  </button>
+
+  <button class="menu-btn" onclick="saveGoogleRole('landlord')">
+    Continue as Landlord
+  </button>
+</div>
     <div id="appScreen" style="display:none;">
       <div id="homeScreen" class="home-screen active">
         <div class="home-card">
