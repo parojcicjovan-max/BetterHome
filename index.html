@@ -57,6 +57,34 @@
       line-height: 1.6;
     }
 
+    .google-btn {
+      width: 100%;
+      background: white;
+      color: #111827;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 17px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 22px 0 12px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.07);
+      transition: 0.2s;
+    }
+
+    .google-btn:hover {
+      background: #f8fafc;
+      transform: translateY(-2px);
+    }
+
+    .divider {
+      text-align: center;
+      color: #64748b;
+      font-weight: bold;
+      margin: 12px 0 22px;
+      font-size: 14px;
+    }
+
     .feature-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -384,6 +412,12 @@
       <p class="subtitle">Secure login for tenants and landlords.</p>
       <p class="small-text">Create an account, choose your role, and access only the features connected to your account.</p>
 
+      <button type="button" class="google-btn" onclick="googleLogin()">
+        Continue with Google
+      </button>
+
+      <div class="divider">OR</div>
+
       <div class="auth-tabs">
         <button type="button" id="loginTab" class="active">Login</button>
         <button type="button" id="signupTab">Sign Up</button>
@@ -538,6 +572,19 @@
       document.getElementById("signupTab").classList.toggle("active", mode === "signup");
       document.getElementById("signupFields").style.display = mode === "signup" ? "block" : "none";
       document.getElementById("authButton").textContent = mode === "signup" ? "Create Account" : "Login";
+    }
+
+    async function googleLogin() {
+      const { error } = await client.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: window.location.origin + window.location.pathname
+        }
+      });
+
+      if (error) {
+        authMessage.textContent = error.message;
+      }
     }
 
     async function handleAuth() {
