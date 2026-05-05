@@ -1077,6 +1077,27 @@
     }
 
     checkExistingSession();
+    async function saveGoogleRole(role) {
+  const fullName =
+    currentUser.user_metadata?.full_name ||
+    currentUser.user_metadata?.name ||
+    currentUser.email;
+
+  const { error } = await client.from("profiles").insert({
+    id: currentUser.id,
+    full_name: fullName,
+    role: role
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await loadProfile();
+  document.getElementById("roleScreen").style.display = "none";
+  showApp();
+}
   </script>
 </body>
 </html>
