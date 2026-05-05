@@ -675,19 +675,11 @@
         .eq("id", currentUser.id)
         .single();
 
-      if (error || !data) {
-        currentProfile = {
-          id: currentUser.id,
-          full_name: currentUser.email,
-          role: "tenant"
-        };
-
-        await client.from("profiles").insert({
-          id: currentUser.id,
-          full_name: currentUser.email,
-          role: "tenant"
-        });
-      } else {
+     if (error || !data) {
+  document.getElementById("authScreen").style.display = "none";
+  document.getElementById("roleScreen").style.display = "block";
+  return;
+} else {
         currentProfile = data;
       }
     }
