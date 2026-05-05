@@ -867,6 +867,31 @@
 
       div.appendChild(meta);
 
+      const chatBox = document.createElement("div");
+chatBox.classList.add("description-box");
+chatBox.innerHTML = `
+  <strong>Messages:</strong>
+  <div id="messages-${report.id}" style="margin-top:10px;"></div>
+
+  <textarea 
+    id="chat-input-${report.id}" 
+    placeholder="Write a message..."
+    style="margin-top:12px;"
+  ></textarea>
+
+  <button 
+    type="button" 
+    class="submit-btn" 
+    onclick="sendMessage('${report.id}')"
+  >
+    Send Message
+  </button>
+`;
+
+div.appendChild(chatBox);
+
+loadMessages(report.id);
+
       const description = document.createElement("div");
       description.classList.add("description-box");
       description.innerHTML = `<strong>Description:</strong><br>${escapeHTML(report.description)}`;
@@ -1121,6 +1146,68 @@
     authMessage.className = "success-message";
     authMessage.textContent = "Password reset email sent. Check your inbox.";
   }
+}
+    async function loadMessages(reportId) {
+  const messagesDiv = document.getElementById("messages-" + reportId);
+  if (!messagesDiv) return;
+
+  const { data, error } = await client
+    .from("messages")
+    .select("*")
+    .eq("report_id", reportId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    messagesDiv.innerHTML = "<p>Could not load messages.</p>";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    messagesDiv.innerHTML = "<p style='color:#64748b;'>No messages yet.</p>";
+    return;
+  }
+
+  messagesDiv.innerHTML = "";
+
+  data.forEach(msg => {
+    const messageItem = document.createElement("div");
+    messageItem.style.marginBottom = "10px";
+    messageItem.style.padding = "10px";
+    messageItem.style.borderRadius = "10px";
+    messageItem.style.background = msg.sender_role === "landlord" ? "#eff6ff" : "#f0fdf4";
+
+    messageItem.innerHTML = `
+      <strong>${escapeHTML(msg.sender_role)}:</strong><br>
+      ${escapeHTML(msg.message)}
+    `;
+
+    messagesDiv.appendChild(messageItem);
+  });
+}
+
+async function sendMessage(reportId) {
+  const input = document.getElementById("chat-input-" + reportId);
+  const message = cleanInput(input.value);
+
+  if (!message) {
+    alert("Please write a message first.");
+    return;
+  }
+
+  const { error } = await client.from("messages").insert({
+    report_id: reportId,
+    sender_id: currentUser.id,
+    sender_role: currentProfile.role,
+    message: message
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  input.value = "";
+  await loadMessages(reportId);
 }
   </script>
 </body>
