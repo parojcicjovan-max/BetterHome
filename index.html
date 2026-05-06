@@ -467,11 +467,6 @@
           <h1>BetterHome</h1>
           <div id="userBar" class="user-bar"></div>
 
-          <div class="description-box">
-  <strong>Notifications:</strong>
-  <div id="notificationsList" style="margin-top:10px;"></div>
-</div>
-
           <p class="subtitle">A clean and simple platform for reporting apartment issues and tracking repair updates.</p>
           <p class="small-text">Tenants can submit maintenance reports with photos, descriptions, and automatic dates. Landlords can review each issue and update the repair status.</p>
 
@@ -559,18 +554,6 @@
     let currentUser = null;
     let currentProfile = null;
     let uploadedImageData = "";
-    async function createNotification(userId, reportId, message) {
-  const { error } = await client.from("notifications").insert({
-    user_id: userId,
-    report_id: reportId,
-    message: message,
-    is_read: false
-  });
-
-  if (error) {
-    console.error("Notification error:", error);
-  }
-}
 
     const authScreen = document.getElementById("authScreen");
     const appScreen = document.getElementById("appScreen");
@@ -914,41 +897,6 @@ chatBox.innerHTML = `
 
 div.appendChild(chatBox);
 
-      loadNotifications() {
-  const notificationsList = document.getElementById("notificationsList");
-  if (!notificationsList || !currentUser) return;
-
-  const { data, error } = await client
-    .from("notifications")
-    .select("*")
-    .eq("user_id", currentUser.id)
-    .order("date", { ascending: false });
-
-  if (error) {
-    notificationsList.innerHTML = "<p>Could not load notifications.</p>";
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    notificationsList.innerHTML = "<p style='color:#64748b;'>No notifications yet.</p>";
-    return;
-  }
-
-  notificationsList.innerHTML = "";
-
-  data.forEach(notification => {
-    const div = document.createElement("div");
-    div.style.background = "#f8fafc";
-    div.style.border = "1px solid #e2e8f0";
-    div.style.borderRadius = "10px";
-    div.style.padding = "10px";
-    div.style.marginBottom = "8px";
-    div.textContent = notification.message;
-
-    notificationsList.appendChild(div);
-  });
-}
-
 setTimeout(function () {
   loadMessages(report.id);
 }, 0);
@@ -1267,3 +1215,4 @@ async function sendMessage(reportId) {
   </script>
 </body>
 </html>
+
