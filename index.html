@@ -554,6 +554,18 @@
     let currentUser = null;
     let currentProfile = null;
     let uploadedImageData = "";
+    async function createNotification(userId, reportId, message) {
+  const { error } = await client.from("notifications").insert({
+    user_id: userId,
+    report_id: reportId,
+    message: message,
+    is_read: false
+  });
+
+  if (error) {
+    console.error("Notification error:", error);
+  }
+}
 
     const authScreen = document.getElementById("authScreen");
     const appScreen = document.getElementById("appScreen");
