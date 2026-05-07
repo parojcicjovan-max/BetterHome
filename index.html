@@ -1122,6 +1122,22 @@ setTimeout(function () {
       }
     }
 
+    async function checkExistingSession() {
+  const { data } = await client.auth.getSession();
+
+  if (data.session && data.session.user) {
+
+    if (!data.session.user.email_confirmed_at) {
+      await client.auth.signOut();
+      return;
+    }
+
+    currentUser = data.session.user;
+    await loadProfile();
+    showApp();
+  }
+}
+
     checkExistingSession();
     async function saveGoogleRole(role) {
   const fullName =
