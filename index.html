@@ -649,9 +649,11 @@
         return;
       }
 
-      authMessage.className = "success-message";
-      authMessage.textContent = "Account created. You can log in now.";
-      setAuthMode("login");
+    authMessage.className = "success-message";
+authMessage.textContent =
+  "Account created. Please check your email and confirm your account before logging in.";
+
+setAuthMode("login");
     }
 
  async function login() {
