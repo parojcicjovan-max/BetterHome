@@ -649,42 +649,29 @@
         return;
       }
 
-    authMessage.className = "success-message";
-authMessage.textContent =
-  "Account created. Please check your email and confirm your account before logging in.";
-
-setAuthMode("login");
+      authMessage.className = "success-message";
+      authMessage.textContent = "Account created. You can log in now.";
+      setAuthMode("login");
     }
 
- async function login() {
-  authMessage.textContent = "";
-  authMessage.className = "error-message";
+    async function login() {
+      authMessage.textContent = "";
+      authMessage.className = "error-message";
 
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
 
-  const { data, error } = await client.auth.signInWithPassword({
-    email,
-    password
-  });
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
 
-  if (error) {
-    authMessage.textContent = error.message;
-    return;
-  }
+      if (error) {
+        authMessage.textContent = error.message;
+        return;
+      }
 
-  if (!data.user.email_confirmed_at) {
-    authMessage.textContent =
-      "Please confirm your email before logging in.";
-
-    await client.auth.signOut();
-    return;
-  }
-
-  currentUser = data.user;
-  await loadProfile();
-  showApp();
-}
+      currentUser = data.user;
+      await loadProfile();
+      showApp();
+    }
 
     async function loadProfile() {
       const { data, error } = await client
@@ -1122,22 +1109,6 @@ setTimeout(function () {
       }
     }
 
-    async function checkExistingSession() {
-  const { data } = await client.auth.getSession();
-
-  if (data.session && data.session.user) {
-
-    if (!data.session.user.email_confirmed_at) {
-      await client.auth.signOut();
-      return;
-    }
-
-    currentUser = data.session.user;
-    await loadProfile();
-    showApp();
-  }
-}
-
     checkExistingSession();
     async function saveGoogleRole(role) {
   const fullName =
@@ -1244,4 +1215,5 @@ async function sendMessage(reportId) {
   </script>
 </body>
 </html>
+
 
